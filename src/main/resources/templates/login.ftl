@@ -1,13 +1,10 @@
-<#ftl encoding='UTF-8'>
+<!DOCTYPE html>
 <html>
 <head>
     <link href="/css/styles.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
-<#if error??>
-    <div class="alert alert-danger" role="alert">Логин или пароль введены неверно</div>
-</#if>
 <div class="form-style-2">
     <div class="form-style-2-heading">
         Please Login!

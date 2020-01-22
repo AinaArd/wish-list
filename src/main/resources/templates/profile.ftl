@@ -5,7 +5,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="form-style-2-heading">${user.name}</div>
+<div class="form-style-2-heading">${user.login}</div>
 <a href="/logout">Выход</a>
 </body>
 </html>
