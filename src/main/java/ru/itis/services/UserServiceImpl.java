@@ -1,12 +1,14 @@
 package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.forms.UserForm;
 import ru.itis.models.Role;
 import ru.itis.models.User;
 import ru.itis.repositories.UsersRepository;
+import ru.itis.security.details.UserDetailsImpl;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,5 +28,10 @@ public class UserServiceImpl implements UserService {
                 .role(Role.AUTHOR)
                 .build();
         usersRepository.save(newUser);
+    }
+
+    @Override
+    public User getCurrentUser(Authentication authentication) {
+        return ((UserDetailsImpl) authentication.getPrincipal()).getUser();
     }
 }
