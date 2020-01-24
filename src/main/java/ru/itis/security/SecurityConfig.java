@@ -1,68 +1,59 @@
 package ru.itis.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import ru.itis.security.filters.TokenAuthenticationFilter;
+import ru.itis.security.providers.TokenAuthenticationProvider;
 
-import javax.sql.DataSource;
-
-@Configuration
-@EnableWebSecurity
+@Configuration // говорим, что у нас конфигурационный класс
+@EnableGlobalMethodSecurity(prePostEnabled = true) // включаем проверку безопасности через аннотации
+@EnableWebSecurity // включаем безопасность
+@ComponentScan("ru.itis") // говорим, чтобы искал все компоненты в наших пакетах
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public PasswordEncoder passwordEncoder;
-
-    @Qualifier("userDetailsServiceImpl")
-    @Autowired
-    public UserDetailsService service;
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.authorizeRequests()
-                .antMatchers("/register/**").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/profile/**").authenticated()
-                .and()
-
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/profile")
-                .usernameParameter("login")
-                .and()
-                .logout().deleteCookies("JSESSIONID")
-                .and()
-
-                .rememberMe()
-                .rememberMeParameter("remember-me")
-                .tokenRepository(tokenRepository());
-
-        http.csrf().disable();
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service).passwordEncoder(passwordEncoder);
-    }
+    // подключем провайдер, который мы написали
+    @Autowired
+    private TokenAuthenticationProvider provider;
 
     @Bean
-    public PersistentTokenRepository tokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-        return tokenRepository;
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    // конфигурируем AuthenticationManager
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // прикручиваем наш провайдер
+        auth.authenticationProvider(provider);
+    }
+    // конфигурирем саму безопасность
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // отключаем csrf
+        http.csrf().disable();
+        http.cors().disable();
+        // отключаем сессии
+        http.sessionManagement().disable();
+        // добавляем наш фильтр
+        http.addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class);
+        // говорим, что разрешаем Swagger
+        http.authorizeRequests().antMatchers("/swagger-ui.html#/**").permitAll();
     }
 }
-
