@@ -1,5 +1,6 @@
 package ru.itis.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class WishList {
     private Long id;
     private String title;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "author")
     private User author;
