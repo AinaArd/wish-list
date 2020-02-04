@@ -8,18 +8,19 @@ import ru.itis.forms.UserForm;
 import ru.itis.services.UserService;
 
 @Controller
+@RequestMapping(path = "/signUp")
 public class SignUpController {
 
     @Autowired
     public UserService userService;
 
-    @GetMapping("/signUp")
+    @GetMapping
     public String getSignUpPage() {
         return "signUp";
     }
 
     @CrossOrigin
-    @PostMapping("/signUp")
+    @PostMapping
     @PreAuthorize("permitAll()")
     public void signUpNewUser(@RequestBody UserForm userForm) {
         userService.addUser(userForm);
