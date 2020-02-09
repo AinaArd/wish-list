@@ -14,11 +14,6 @@ public class SignUpController {
     @Autowired
     public UserService userService;
 
-    @GetMapping
-    public String getSignUpPage() {
-        return "signUp";
-    }
-
     @CrossOrigin
     @PostMapping
     @PreAuthorize("permitAll()")

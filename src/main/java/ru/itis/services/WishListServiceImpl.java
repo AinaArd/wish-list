@@ -11,7 +11,7 @@ import ru.itis.repositories.WishListRepository;
 import java.util.Optional;
 
 @Service
-public class WishListServiceImpl implements WishListService {
+public class WishListServiceImpl implements  WishListService {
 
     @Autowired
     private WishListRepository wishListRepository;
@@ -29,5 +29,21 @@ public class WishListServiceImpl implements WishListService {
                 .build();
         currentUser.getWishLists().add(newWL);
         return wishListRepository.save(newWL);
+    }
+
+    @Override
+    public Optional<WishList> findWishListById(Long wishListId) {
+        return wishListRepository.findById(wishListId);
+    }
+
+    @Override
+    public void remove(String title, String token) {
+        Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
+        if(wishListCandidate.isPresent()) {
+            wishListRepository.delete(wishListCandidate.get());
+            Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
+            User currentUser = tokenCandidate.orElseThrow(IllegalAccessError::new).getUser();
+            currentUser.getWishLists().remove(wishListCandidate.get());
+        } else throw new IllegalArgumentException("Can not find such wish list");
     }
 }

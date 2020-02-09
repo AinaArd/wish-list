@@ -70,4 +70,10 @@ public class UserServiceImpl implements UserService {
         }
         throw new BadCredentialsException("Incorrect login or password");
     }
+
+    @Override
+    public Optional<User> findUserByToken(String token) {
+        String userLogin = tokensRepository.findUsernameByValue(token);
+        return usersRepository.findByLogin(userLogin);
+    }
 }

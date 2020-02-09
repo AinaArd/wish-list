@@ -17,17 +17,6 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping(path = "/login")
-//    public String getLoginPage(Authentication authentication, ModelMap model, HttpServletRequest request) {
-//        if (authentication != null) {
-//            return "redirect:profile";
-//        }
-//        if (request.getParameterMap().containsKey("error")) {
-//            model.addAttribute("error", true);
-//        }
-//        return "login";
-//    }
-
     @CrossOrigin
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
