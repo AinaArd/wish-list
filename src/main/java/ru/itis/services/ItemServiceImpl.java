@@ -7,7 +7,6 @@ import ru.itis.models.Item;
 import ru.itis.models.WishList;
 import ru.itis.repositories.ItemsRepository;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -23,7 +22,7 @@ public class ItemServiceImpl implements ItemService {
     public UserService userService;
 
     @Override
-    public Item addNewItem(ItemForm itemForm, Long listId) {
+    public void addNewItem(ItemForm itemForm, Long listId) {
         WishList wishList = getWishList(listId);
         Item newItem = Item.builder()
                 .name(itemForm.getName())
@@ -31,28 +30,22 @@ public class ItemServiceImpl implements ItemService {
                 .link(itemForm.getLink())
                 .wishList(wishList)
                 .build();
-        wishList.getItems().add(newItem);
-        return itemsRepository.save(newItem);
+        itemsRepository.save(newItem);
     }
 
     @Override
-    public void removeByName(String itemName, Long listId) {
-        WishList wishList = getWishList(listId);
+    public void removeByName(String itemName) {
         Optional<Item> itemCandidate = itemsRepository.findByName(itemName);
         if (itemCandidate.isPresent()) {
             itemsRepository.deleteById(itemCandidate.get().getId());
-            wishList.getItems().remove(itemCandidate.get());
         } else {
             throw new IllegalArgumentException("Can not find such item");
         }
     }
 
     private WishList getWishList(Long listId) {
-        Optional<WishList> wishListCandidate = wishListService.findWishListById(listId);
-        if (wishListCandidate.isPresent()) {
-            return wishListCandidate.get();
-        } else {
-            throw new NoSuchElementException("Can not find such wish list");
-        }
+        return wishListService
+                .findWishListById(listId)
+                .orElseThrow(() -> new IllegalArgumentException("Can not find such wish list"));
     }
 }

@@ -22,7 +22,7 @@ public class WishListServiceImpl implements  WishListService {
     @Override
     public WishList addNewWL(String title, String token) {
         Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
-        User currentUser = tokenCandidate.orElseThrow(IllegalAccessError::new).getUser();
+        User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
         WishList newWL = WishList.builder()
                 .title(title)
                 .author(currentUser)
@@ -42,7 +42,7 @@ public class WishListServiceImpl implements  WishListService {
         if(wishListCandidate.isPresent()) {
             wishListRepository.delete(wishListCandidate.get());
             Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
-            User currentUser = tokenCandidate.orElseThrow(IllegalAccessError::new).getUser();
+            User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
             currentUser.getWishLists().remove(wishListCandidate.get());
         } else {
             throw new IllegalArgumentException("Can not find such wish list");

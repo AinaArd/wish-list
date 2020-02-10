@@ -50,7 +50,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @PostMapping
+    @DeleteMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
     public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
