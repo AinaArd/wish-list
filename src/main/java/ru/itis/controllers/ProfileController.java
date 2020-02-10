@@ -17,6 +17,7 @@ import java.util.Optional;
 import static ru.itis.dto.WishListDto.from;
 
 @Controller
+@RequestMapping("/profile")
 public class ProfileController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ProfileController {
     public UserService userService;
 
     @CrossOrigin
-    @GetMapping("/profile")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
     public ResponseEntity<?> getProfilePage(@RequestHeader(name = "AUTH") String token) {
@@ -38,7 +39,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @PostMapping("/profile")
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
     public ResponseEntity<?> createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
@@ -47,7 +48,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @PostMapping("/profile")
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
     public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
