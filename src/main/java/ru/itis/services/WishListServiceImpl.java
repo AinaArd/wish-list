@@ -37,7 +37,7 @@ public class WishListServiceImpl implements  WishListService {
     }
 
     @Override
-    public void remove(String title, String token) {
+    public void removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
         if(wishListCandidate.isPresent()) {
             wishListRepository.delete(wishListCandidate.get());

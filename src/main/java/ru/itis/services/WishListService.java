@@ -10,5 +10,5 @@ public interface WishListService {
 
     Optional<WishList> findWishListById(Long wishListId);
 
-    void remove(String title, String token);
+    void removeByTitle(String title, String token);
 }

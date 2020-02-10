@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void remove(String itemName) {
+    public void removeByName(String itemName) {
         Optional<Item> itemCandidate = itemsRepository.findByName(itemName);
         if (itemCandidate.isPresent()) {
             itemsRepository.deleteById(itemCandidate.get().getId());

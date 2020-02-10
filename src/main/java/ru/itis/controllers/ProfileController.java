@@ -7,45 +7,51 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.UserDto;
-import ru.itis.forms.ItemForm;
+import ru.itis.dto.WishListDto;
 import ru.itis.models.User;
-import ru.itis.services.ItemService;
 import ru.itis.services.UserService;
+import ru.itis.services.WishListService;
 
-@RequestMapping("/profile")
+import java.util.Optional;
+
+import static ru.itis.dto.WishListDto.from;
+
 @Controller
 public class ProfileController {
 
     @Autowired
-    private ItemService itemService;
+    public WishListService wishListService;
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public ResponseEntity<UserDto> getProfilePage(@RequestHeader(name = "AUTH") String token) {
-        User currentUser = userService.findUserByToken(token).orElseThrow(IllegalArgumentException::new);
-        UserDto userDto = UserDto.from(currentUser);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<?> getProfilePage(@RequestHeader(name = "AUTH") String token) {
+        Optional<User> userCandidate = userService.findUserByToken(token);
+        if (userCandidate.isPresent()) {
+            UserDto userDto = UserDto.from(userCandidate.get());
+            return ResponseEntity.ok(userDto);
+        } else throw new IllegalArgumentException("Can not find such user");
     }
 
     @CrossOrigin
-    @PostMapping
+    @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
-    @ApiOperation("Add new item to wish list")
-    public ResponseEntity<Object> addNewItem(ItemForm itemForm) {
-        return ResponseEntity.ok(itemService.addNewItem(itemForm));
+    @ApiOperation("Create new wish list")
+    public ResponseEntity<?> createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
+        WishListDto newWL = from(wishListService.addNewWL(title, token));
+        return ResponseEntity.ok(newWL);
     }
 
     @CrossOrigin
-    @PostMapping
+    @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
-    @ApiOperation("Delete an item")
-    public ResponseEntity<Object> deleteItem(@RequestParam(name = "title") String itemName) {
-        itemService.remove(itemName);
+    @ApiOperation("Delete a wish list")
+    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
+        wishListService.removeByTitle(title, token);
         return ResponseEntity.ok().build();
     }
 }
