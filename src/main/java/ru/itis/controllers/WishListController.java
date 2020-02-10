@@ -34,7 +34,9 @@ public class WishListController {
         if (wishListCandidate.isPresent()) {
             WishListDto wishListDto = from(wishListCandidate.get());
             return ResponseEntity.ok(wishListDto);
-        } else throw new IllegalArgumentException("Can not find such wish list");
+        } else {
+            throw new IllegalArgumentException("Can not find such wish list");
+        }
     }
 
     @CrossOrigin
@@ -49,7 +51,7 @@ public class WishListController {
     @DeleteMapping("/lists/{list-id}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete an item")
-    public ResponseEntity<Object> deleteItem(@PathVariable(name = "list-id") Long listId ,@RequestParam(name = "title") String itemName) {
+    public ResponseEntity<Object> deleteItem(@PathVariable(name = "list-id") Long listId, @RequestParam(name = "title") String itemName) {
         itemService.removeByName(itemName, listId);
         return ResponseEntity.ok().build();
     }

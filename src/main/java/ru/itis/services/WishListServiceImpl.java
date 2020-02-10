@@ -44,6 +44,8 @@ public class WishListServiceImpl implements  WishListService {
             Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
             User currentUser = tokenCandidate.orElseThrow(IllegalAccessError::new).getUser();
             currentUser.getWishLists().remove(wishListCandidate.get());
-        } else throw new IllegalArgumentException("Can not find such wish list");
+        } else {
+            throw new IllegalArgumentException("Can not find such wish list");
+        }
     }
 }

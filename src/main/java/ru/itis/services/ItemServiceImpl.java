@@ -14,13 +14,13 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
-    private ItemsRepository itemsRepository;
+    public ItemsRepository itemsRepository;
 
     @Autowired
-    private WishListService wishListService;
+    public WishListService wishListService;
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     @Override
     public Item addNewItem(ItemForm itemForm, Long listId) {
@@ -42,13 +42,17 @@ public class ItemServiceImpl implements ItemService {
         if (itemCandidate.isPresent()) {
             itemsRepository.deleteById(itemCandidate.get().getId());
             wishList.getItems().remove(itemCandidate.get());
-        } else throw new IllegalArgumentException("Can not find such item");
+        } else {
+            throw new IllegalArgumentException("Can not find such item");
+        }
     }
 
     private WishList getWishList(Long listId) {
         Optional<WishList> wishListCandidate = wishListService.findWishListById(listId);
         if (wishListCandidate.isPresent()) {
             return wishListCandidate.get();
-        } else throw new NoSuchElementException("Can not find such wish list");
+        } else {
+            throw new NoSuchElementException("Can not find such wish list");
+        }
     }
 }

@@ -35,7 +35,9 @@ public class ProfileController {
         if (userCandidate.isPresent()) {
             UserDto userDto = UserDto.from(userCandidate.get());
             return ResponseEntity.ok(userDto);
-        } else throw new IllegalArgumentException("Can not find such user");
+        } else {
+            throw new IllegalArgumentException("Can not find such user");
+        }
     }
 
     @CrossOrigin
