@@ -14,8 +14,12 @@ import ru.itis.services.UserService;
 @Controller
 public class LoginController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @CrossOrigin
     @PostMapping("/login")

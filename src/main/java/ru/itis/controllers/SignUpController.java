@@ -11,8 +11,12 @@ import ru.itis.services.UserService;
 @RequestMapping(path = "/signUp")
 public class SignUpController {
 
+    private UserService userService;
+
     @Autowired
-    public UserService userService;
+    public SignUpController(UserService userService) {
+        this.userService = userService;
+    }
 
     @CrossOrigin
     @PostMapping

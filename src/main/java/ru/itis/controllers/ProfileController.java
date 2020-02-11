@@ -20,11 +20,14 @@ import static ru.itis.dto.WishListDto.from;
 @RequestMapping("/profile")
 public class ProfileController {
 
-    @Autowired
-    public WishListService wishListService;
+    private WishListService wishListService;
+    private UserService userService;
 
     @Autowired
-    public UserService userService;
+    public ProfileController(WishListService wishListService, UserService userService) {
+        this.wishListService = wishListService;
+        this.userService = userService;
+    }
 
     @CrossOrigin
     @GetMapping

@@ -13,11 +13,14 @@ import java.util.Optional;
 @Service
 public class WishListServiceImpl implements  WishListService {
 
-    @Autowired
     private WishListRepository wishListRepository;
+    private TokensRepository tokensRepository;
 
     @Autowired
-    private TokensRepository tokensRepository;
+    public WishListServiceImpl(WishListRepository wishListRepository, TokensRepository tokensRepository) {
+        this.wishListRepository = wishListRepository;
+        this.tokensRepository = tokensRepository;
+    }
 
     @Override
     public WishList addNewWL(String title, String token) {

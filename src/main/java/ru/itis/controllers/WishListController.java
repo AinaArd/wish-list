@@ -15,11 +15,14 @@ import java.util.Optional;
 @RestController
 public class WishListController {
 
-    @Autowired
-    public ItemService itemService;
+    private ItemService itemService;
+    private WishListService wishListService;
 
     @Autowired
-    public WishListService wishListService;
+    public WishListController(ItemService itemService, WishListService wishListService) {
+        this.itemService = itemService;
+        this.wishListService = wishListService;
+    }
 
     @CrossOrigin
     @GetMapping("/lists/{list-id}")

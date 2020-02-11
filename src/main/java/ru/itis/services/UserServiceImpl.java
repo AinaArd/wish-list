@@ -22,14 +22,16 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UsersRepository usersRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    private TokensRepository tokensRepository;
 
     @Autowired
-    private TokensRepository tokensRepository;
+    public UserServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
+        this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokensRepository = tokensRepository;
+    }
 
     @Override
     public void addUser(UserForm userForm) {

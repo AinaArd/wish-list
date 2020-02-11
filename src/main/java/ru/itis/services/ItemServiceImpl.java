@@ -12,14 +12,15 @@ import java.util.Optional;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    @Autowired
-    public ItemsRepository itemsRepository;
+    private ItemsRepository itemsRepository;
+
+    private WishListService wishListService;
 
     @Autowired
-    public WishListService wishListService;
-
-    @Autowired
-    public UserService userService;
+    public ItemServiceImpl(ItemsRepository itemsRepository, WishListService wishListService) {
+        this.itemsRepository = itemsRepository;
+        this.wishListService = wishListService;
+    }
 
     @Override
     public void addNewItem(ItemForm itemForm, Long listId) {
