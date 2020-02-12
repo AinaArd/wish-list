@@ -2,7 +2,6 @@ package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,22 +51,25 @@ public class UserService {
 
     public TokenDto login(UserForm userForm) {
         Optional<User> userCandidate = usersRepository.findByLogin(userForm.getLogin());
-
+        String value = UUID.randomUUID().toString();
+        Token token = Token.builder()
+                .createdAt(LocalDateTime.now())
+                .expiredDateTime(LocalDateTime.now().plusSeconds(expiredSecondsForToken))
+                .value(value)
+                .build();
         if (userCandidate.isPresent()) {
             User user = userCandidate.get();
             if (passwordEncoder.matches(userForm.getPassword(), user.getPassword())) {
-                String value = UUID.randomUUID().toString();
-                Token token = Token.builder()
-                        .createdAt(LocalDateTime.now())
-                        .expiredDateTime(LocalDateTime.now().plusSeconds(expiredSecondsForToken))
-                        .value(value)
-                        .user(user)
-                        .build();
+                token.setUser(user);
                 tokensRepository.save(token);
                 return TokenDto.from(token);
             }
+        } else {
+            User defaultUser = User.getDefaultUser();
+            token.setUser(defaultUser);
+            return TokenDto.from(token);
         }
-        throw new BadCredentialsException("Incorrect login or password");
+        return null;
     }
 
     public Optional<User> findUserByToken(String token) {

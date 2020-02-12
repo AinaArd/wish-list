@@ -30,4 +30,12 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "author")
     private List<WishList> wishLists;
+
+    public static User getDefaultUser() {
+        return User.builder()
+                .id(null)
+                .login("Null login")
+                .wishLists(null)
+                .build();
+    }
 }

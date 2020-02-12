@@ -1,7 +1,6 @@
 package ru.itis.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ public class LoginController {
     @CrossOrigin
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<TokenDto> login(@RequestBody UserForm userForm) {
-        return ResponseEntity.ok(userService.login(userForm));
+    public TokenDto login(@RequestBody UserForm userForm) {
+        return userService.login(userForm);
     }
 }

@@ -2,7 +2,6 @@ package ru.itis.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.UserDto;
@@ -13,7 +12,6 @@ import ru.itis.services.WishListService;
 
 import java.util.Optional;
 
-import static ru.itis.dto.WishListDto.from;
 
 @RestController
 public class ProfileController {
@@ -31,13 +29,13 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public ResponseEntity<?> getProfilePage(@RequestHeader(name = "AUTH") String token) {
+    public UserDto getProfilePage(@RequestHeader(name = "AUTH") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            UserDto userDto = UserDto.from(userCandidate.get());
-            return ResponseEntity.ok(userDto);
+            return UserDto.from(userCandidate.get());
         } else {
-            throw new IllegalArgumentException("Can not find such user");
+            User defaultUserDto  = User.getDefaultUser();
+            return UserDto.from(defaultUserDto);
         }
     }
 
@@ -45,17 +43,15 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public ResponseEntity<?> createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
-        WishListDto newWL = from(wishListService.addNewWL(title, token));
-        return ResponseEntity.ok(newWL);
+    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
+        return WishListDto.from(wishListService.addNewWL(title, token));
     }
 
     @CrossOrigin
     @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
-    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
+    public void deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
         wishListService.removeByTitle(title, token);
-        return ResponseEntity.ok().build();
     }
 }
