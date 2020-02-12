@@ -16,7 +16,6 @@ import java.util.List;
 public class UserDto {
     private Long id;
     private String login;
-    private String name;
     private List<WishList> wishLists;
 
     public static UserDto from(User user) {

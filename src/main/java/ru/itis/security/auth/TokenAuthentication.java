@@ -15,7 +15,9 @@ public class TokenAuthentication implements Authentication {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (userDetails != null) {
             return userDetails.getAuthorities();
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -32,8 +34,9 @@ public class TokenAuthentication implements Authentication {
     public Object getPrincipal() {
         if (userDetails != null) {
             return userDetails.getUser();
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
