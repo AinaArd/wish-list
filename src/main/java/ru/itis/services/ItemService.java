@@ -13,7 +13,6 @@ import java.util.Optional;
 public class ItemService {
 
     private ItemsRepository itemsRepository;
-
     private WishListService wishListService;
 
     @Autowired
