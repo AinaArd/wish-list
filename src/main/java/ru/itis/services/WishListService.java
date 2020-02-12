@@ -11,7 +11,7 @@ import ru.itis.repositories.WishListRepository;
 import java.util.Optional;
 
 @Service
-public class WishListService implements  WishListService {
+public class WishListService {
 
     private WishListRepository wishListRepository;
     private TokensRepository tokensRepository;
@@ -22,7 +22,6 @@ public class WishListService implements  WishListService {
         this.tokensRepository = tokensRepository;
     }
 
-    @Override
     public WishList addNewWL(String title, String token) {
         Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
         User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
@@ -34,12 +33,10 @@ public class WishListService implements  WishListService {
         return wishListRepository.save(newWL);
     }
 
-    @Override
     public Optional<WishList> findWishListById(Long wishListId) {
         return wishListRepository.findById(wishListId);
     }
 
-    @Override
     public void removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
         if(wishListCandidate.isPresent()) {

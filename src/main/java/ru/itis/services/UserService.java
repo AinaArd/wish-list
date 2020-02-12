@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserService {
+public class UserService {
 
     private UsersRepository usersRepository;
     private PasswordEncoder passwordEncoder;
@@ -33,7 +33,6 @@ public class UserService implements UserService {
         this.tokensRepository = tokensRepository;
     }
 
-    @Override
     public void addUser(UserForm userForm) {
         String hashPassword = passwordEncoder.encode(userForm.getPassword());
         User newUser = User.builder()
@@ -44,7 +43,6 @@ public class UserService implements UserService {
         usersRepository.save(newUser);
     }
 
-    @Override
     public User getCurrentUser(Authentication authentication) {
         return ((UserDetailsImpl) authentication.getPrincipal()).getUser();
     }
@@ -52,7 +50,6 @@ public class UserService implements UserService {
     @Value("${token.expired}")
     private Integer expiredSecondsForToken;
 
-    @Override
     public TokenDto login(UserForm userForm) {
         Optional<User> userCandidate = usersRepository.findByLogin(userForm.getLogin());
 
@@ -73,7 +70,6 @@ public class UserService implements UserService {
         throw new BadCredentialsException("Incorrect login or password");
     }
 
-    @Override
     public Optional<User> findUserByToken(String token) {
         String userLogin = tokensRepository.findUsernameByValue(token);
         return usersRepository.findByLogin(userLogin);

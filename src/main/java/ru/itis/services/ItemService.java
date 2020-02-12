@@ -10,7 +10,7 @@ import ru.itis.repositories.ItemsRepository;
 import java.util.Optional;
 
 @Service
-public class ItemService implements ItemService {
+public class ItemService {
 
     private ItemsRepository itemsRepository;
 
@@ -22,7 +22,6 @@ public class ItemService implements ItemService {
         this.wishListService = wishListService;
     }
 
-    @Override
     public void addNewItem(ItemForm itemForm, Long listId) {
         WishList wishList = getWishList(listId);
         Item newItem = Item.builder()
@@ -34,7 +33,6 @@ public class ItemService implements ItemService {
         itemsRepository.save(newItem);
     }
 
-    @Override
     public void removeByName(String itemName) {
         Optional<Item> itemCandidate = itemsRepository.findByName(itemName);
         if (itemCandidate.isPresent()) {
