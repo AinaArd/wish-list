@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.UserDto;
 import ru.itis.dto.WishListDto;
@@ -16,8 +15,7 @@ import java.util.Optional;
 
 import static ru.itis.dto.WishListDto.from;
 
-@Controller
-@RequestMapping("/profile")
+@RestController
 public class ProfileController {
 
     private WishListService wishListService;
@@ -30,7 +28,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
     public ResponseEntity<?> getProfilePage(@RequestHeader(name = "AUTH") String token) {
@@ -44,7 +42,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @PostMapping
+    @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
     public ResponseEntity<?> createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
@@ -53,7 +51,7 @@ public class ProfileController {
     }
 
     @CrossOrigin
-    @DeleteMapping
+    @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
     public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
