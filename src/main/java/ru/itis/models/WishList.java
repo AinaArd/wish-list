@@ -34,4 +34,12 @@ public class WishList {
     @OneToMany(mappedBy = "wishList")
     private List<Item> items;
 
+    public static WishList getDefault() {
+        return WishList.builder()
+                .id(null)
+                .title("Null wish list")
+                .author(User.getDefaultUser())
+                .items(null)
+                .build();
+    }
 }

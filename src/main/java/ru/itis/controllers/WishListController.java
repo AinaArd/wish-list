@@ -29,11 +29,12 @@ public class WishListController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
     public WishListDto getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "AUTH") String token) {
+//      TODO: if anonym --> ability to reserve an item
         Optional<WishList> wishListCandidate = wishListService.findWishListById(listId);
         if (wishListCandidate.isPresent()) {
             return WishListDto.from(wishListCandidate.get());
         } else {
-            throw new IllegalArgumentException("Can not find such wish list");
+            return WishListDto.from(wishListService.getDefaultWishList());
         }
     }
 

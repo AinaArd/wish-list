@@ -39,13 +39,17 @@ public class WishListService {
 
     public void removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
-        if(wishListCandidate.isPresent()) {
+        if (wishListCandidate.isPresent()) {
             wishListRepository.delete(wishListCandidate.get());
             Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
             User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
             currentUser.getWishLists().remove(wishListCandidate.get());
         } else {
-            throw new IllegalArgumentException("Can not find such wish list");
+            System.out.println("No such wish list");
         }
+    }
+
+    public WishList getDefaultWishList() {
+        return WishList.getDefault();
     }
 }
