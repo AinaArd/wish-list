@@ -12,7 +12,6 @@ import ru.itis.services.WishListService;
 
 import java.util.Optional;
 
-
 @RestController
 public class ProfileController {
 
