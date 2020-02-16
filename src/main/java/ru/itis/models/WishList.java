@@ -1,10 +1,7 @@
 package ru.itis.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -26,12 +23,13 @@ public class WishList {
 
     @JsonIgnore
     @ManyToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "author")
     private User author;
 
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "wishList")
+    @OneToMany(mappedBy = "wishList", cascade = CascadeType.ALL)
     private List<Item> items;
 
     public static WishList getDefault() {

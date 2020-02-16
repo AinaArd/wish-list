@@ -8,6 +8,7 @@ import ru.itis.models.WishList;
 import ru.itis.repositories.TokensRepository;
 import ru.itis.repositories.WishListRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -15,11 +16,14 @@ public class WishListService {
 
     private WishListRepository wishListRepository;
     private TokensRepository tokensRepository;
+    private UserService userService;
 
     @Autowired
-    public WishListService(WishListRepository wishListRepository, TokensRepository tokensRepository) {
+    public WishListService(WishListRepository wishListRepository, TokensRepository tokensRepository,
+                           UserService userService) {
         this.wishListRepository = wishListRepository;
         this.tokensRepository = tokensRepository;
+        this.userService = userService;
     }
 
     public WishList addNewWL(String title, String token) {
@@ -37,19 +41,15 @@ public class WishListService {
         return wishListRepository.findById(wishListId);
     }
 
-    public void removeByTitle(String title, String token) {
+    public void removeByTitle(String title, String token, HttpServletResponse response) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
         if (wishListCandidate.isPresent()) {
-            wishListRepository.delete(wishListCandidate.get());
-            Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
-            User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
+            User currentUser = userService.findUserByToken(token).get();
             currentUser.getWishLists().remove(wishListCandidate.get());
+            userService.save(currentUser);
+            wishListRepository.delete(wishListCandidate.get());
         } else {
-            System.out.println("No such wish list");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    public WishList getDefaultWishList() {
-        return WishList.getDefault();
     }
 }

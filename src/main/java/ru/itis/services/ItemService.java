@@ -28,6 +28,7 @@ public class ItemService {
                 .price(itemForm.getPrice())
                 .link(itemForm.getLink())
                 .wishList(wishList)
+                .description(itemForm.getDescription())
                 .build();
         itemsRepository.save(newItem);
     }

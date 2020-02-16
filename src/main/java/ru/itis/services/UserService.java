@@ -82,4 +82,8 @@ public class UserService {
     public List<UserDto> getUsersByName(String login) {
         return usersRepository.findAllByLoginIsContaining(login);
     }
+
+    protected void save(User user) {
+        usersRepository.save(user);
+    }
 }
