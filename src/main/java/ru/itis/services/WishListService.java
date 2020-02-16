@@ -2,10 +2,8 @@ package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itis.models.Token;
 import ru.itis.models.User;
 import ru.itis.models.WishList;
-import ru.itis.repositories.TokensRepository;
 import ru.itis.repositories.WishListRepository;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,20 +13,16 @@ import java.util.Optional;
 public class WishListService {
 
     private WishListRepository wishListRepository;
-    private TokensRepository tokensRepository;
     private UserService userService;
 
     @Autowired
-    public WishListService(WishListRepository wishListRepository, TokensRepository tokensRepository,
-                           UserService userService) {
+    public WishListService(WishListRepository wishListRepository, UserService userService) {
         this.wishListRepository = wishListRepository;
-        this.tokensRepository = tokensRepository;
         this.userService = userService;
     }
 
     public WishList addNewWishList(String title, String token) {
-        Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
-        User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
+        User currentUser = userService.findUserByToken(token).get();
         WishList newWL = WishList.builder()
                 .title(title)
                 .author(currentUser)
