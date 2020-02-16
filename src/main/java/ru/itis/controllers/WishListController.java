@@ -4,13 +4,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.WishListDto;
 import ru.itis.forms.ItemForm;
 import ru.itis.models.WishList;
 import ru.itis.services.ItemService;
 import ru.itis.services.WishListService;
-
-import java.util.Optional;
 
 @RestController
 public class WishListController {
@@ -28,11 +25,10 @@ public class WishListController {
     @GetMapping("/lists/{list-id}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
-    public WishListDto getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "AUTH") String token) {
+    public WishList getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "AUTH") String token) {
 //      TODO: if anonym --> ability to reserve an item
-        Optional<WishList> wishListCandidate = wishListService.findWishListById(listId);
         WishList defaultWishList = WishList.getDefault();
-        return WishListDto.from(wishListCandidate.orElse(defaultWishList));
+        return wishListService.findWishListById(listId).orElse(defaultWishList);
     }
 
     @CrossOrigin

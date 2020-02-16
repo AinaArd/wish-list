@@ -44,7 +44,7 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
     public WishListDto createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
-        return WishListDto.from(wishListService.addNewWL(title, token));
+        return WishListDto.from(wishListService.addNewWishList(title, token));
     }
 
     @CrossOrigin

@@ -26,7 +26,7 @@ public class WishListService {
         this.userService = userService;
     }
 
-    public WishList addNewWL(String title, String token) {
+    public WishList addNewWishList(String title, String token) {
         Optional<Token> tokenCandidate = tokensRepository.findByValue(token);
         User currentUser = tokenCandidate.orElseThrow(IllegalArgumentException::new).getUser();
         WishList newWL = WishList.builder()
