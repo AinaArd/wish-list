@@ -10,7 +10,6 @@ import ru.itis.models.User;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
@@ -51,7 +50,7 @@ public class ProfileController {
     @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
-    public void deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token, HttpServletResponse response) {
-        wishListService.removeByTitle(title, token, response);
+    public void deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
+        wishListService.removeByTitle(title, token);
     }
 }

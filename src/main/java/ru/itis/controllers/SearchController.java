@@ -26,7 +26,7 @@ public class SearchController {
     @PreAuthorize("permitAll()")
     @PostMapping("/search")
     @ApiOperation("Find users by name")
-    public List<UserDto> findUsers(@RequestParam String name) {
-        return userService.getUsersByName(name);
+    public List<UserDto> findUsers(@RequestParam String login) {
+        return userService.getUsersByLogin(login);
     }
 }
