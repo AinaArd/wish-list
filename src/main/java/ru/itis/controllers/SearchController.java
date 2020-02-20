@@ -23,7 +23,7 @@ public class SearchController {
     }
 
     @CrossOrigin
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("permitAll()")
     @PostMapping("/search")
     @ApiOperation("Find users by name")
     public List<UserDto> findUsers(@RequestParam String name) {
