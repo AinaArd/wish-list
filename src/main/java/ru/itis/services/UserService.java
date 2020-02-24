@@ -81,6 +81,7 @@ public class UserService {
 
     public boolean checkIfExists(String value) {
         return usersRepository.findByLogin(value).isPresent();
+    }
   
     public List<UserDto> getUsersByLogin(String login) {
         return usersRepository.findAllByLoginIsContaining(login);
