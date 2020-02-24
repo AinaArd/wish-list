@@ -1,5 +1,6 @@
 package ru.itis.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ public class LoginController {
     @CrossOrigin
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
+    @ApiOperation("Login an existing user")
     public TokenDto login(@RequestBody UserForm userForm) {
         return userService.login(userForm);
     }

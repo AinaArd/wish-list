@@ -1,5 +1,6 @@
 package ru.itis.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.forms.UserForm;
 import ru.itis.services.UserService;
+
+import javax.validation.Valid;
 
 @RestController
 public class SignUpController {
@@ -22,7 +25,8 @@ public class SignUpController {
     @CrossOrigin
     @PostMapping("/signUp")
     @PreAuthorize("permitAll()")
-    public void signUpNewUser(@RequestBody UserForm userForm) {
+    @ApiOperation("Sign up a new user")
+    public void signUpNewUser(@Valid @RequestBody UserForm userForm) {
         userService.addUser(userForm);
     }
 }

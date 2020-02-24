@@ -76,4 +76,8 @@ public class UserService {
         String userLogin = tokensRepository.findUsernameByValue(token);
         return usersRepository.findByLogin(userLogin);
     }
+
+    public boolean checkIfExists(String value) {
+        return usersRepository.findByLogin(value).isPresent();
+    }
 }
