@@ -6,7 +6,6 @@ import ru.itis.models.User;
 import ru.itis.models.WishList;
 import ru.itis.repositories.WishListRepository;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -35,15 +34,16 @@ public class WishListService {
         return wishListRepository.findById(wishListId);
     }
 
-    public void removeByTitle(String title, String token, HttpServletResponse response) {
+    public boolean removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
         if (wishListCandidate.isPresent()) {
             User currentUser = userService.findUserByToken(token).get();
             currentUser.getWishLists().remove(wishListCandidate.get());
             userService.save(currentUser);
             wishListRepository.delete(wishListCandidate.get());
+            return true;
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return false;
         }
     }
 }

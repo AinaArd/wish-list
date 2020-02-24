@@ -79,11 +79,11 @@ public class UserService {
         return usersRepository.findByLogin(userLogin);
     }
 
-    public List<UserDto> getUsersByName(String login) {
+    public List<UserDto> getUsersByLogin(String login) {
         return usersRepository.findAllByLoginIsContaining(login);
     }
 
-    protected void save(User user) {
+    void save(User user) {
         usersRepository.save(user);
     }
 }
