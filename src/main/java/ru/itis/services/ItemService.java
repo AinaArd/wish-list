@@ -13,7 +13,6 @@ import java.util.Optional;
 public class ItemService {
 
     private ItemsRepository itemsRepository;
-
     private WishListService wishListService;
 
     @Autowired
@@ -29,6 +28,7 @@ public class ItemService {
                 .price(itemForm.getPrice())
                 .link(itemForm.getLink())
                 .wishList(wishList)
+                .description(itemForm.getDescription())
                 .build();
         itemsRepository.save(newItem);
     }

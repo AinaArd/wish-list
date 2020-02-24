@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
+import ru.itis.dto.UserDto;
 import ru.itis.forms.UserForm;
 import ru.itis.models.Role;
 import ru.itis.models.Token;
@@ -15,6 +16,7 @@ import ru.itis.repositories.UsersRepository;
 import ru.itis.security.details.UserDetailsImpl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,5 +81,12 @@ public class UserService {
 
     public boolean checkIfExists(String value) {
         return usersRepository.findByLogin(value).isPresent();
+  
+    public List<UserDto> getUsersByLogin(String login) {
+        return usersRepository.findAllByLoginIsContaining(login);
+    }
+
+    void save(User user) {
+        usersRepository.save(user);
     }
 }

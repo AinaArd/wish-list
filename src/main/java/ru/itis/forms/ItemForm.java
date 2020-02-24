@@ -7,5 +7,5 @@ public class ItemForm {
     private String name;
     private int price;
     private String link;
-    private Long wishListId;
+    private String description;
 }
