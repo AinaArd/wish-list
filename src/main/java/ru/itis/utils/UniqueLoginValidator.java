@@ -1,20 +1,20 @@
 package ru.itis.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.itis.services.UserService;
+import ru.itis.repositories.UsersRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class UniqueLoginValidator implements ConstraintValidator<UniqueLogin, String> {
 
-   private UserService userService;
+   private UsersRepository usersRepository;
 
    @Autowired
-   public UniqueLoginValidator(UserService userService) {
-      this.userService = userService;
+   public UniqueLoginValidator(UsersRepository usersRepository) {
+      this.usersRepository = usersRepository;
    }
 
    public boolean isValid(String value, ConstraintValidatorContext context) {
-      return value != null && !userService.checkIfExists(value);   }
+      return value != null && !usersRepository.findByLogin(value).isPresent();   }
 }
