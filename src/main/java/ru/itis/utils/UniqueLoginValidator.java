@@ -8,13 +8,14 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueLoginValidator implements ConstraintValidator<UniqueLogin, String> {
 
-   private UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
-   @Autowired
-   public UniqueLoginValidator(UsersRepository usersRepository) {
-      this.usersRepository = usersRepository;
-   }
+    @Autowired
+    public UniqueLoginValidator(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
-   public boolean isValid(String value, ConstraintValidatorContext context) {
-      return value != null && !usersRepository.findByLogin(value).isPresent();   }
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        return value != null && !usersRepository.findByLogin(value).isPresent();
+    }
 }
