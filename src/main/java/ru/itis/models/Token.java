@@ -24,7 +24,4 @@ public class Token {
     private LocalDateTime createdAt;
     private LocalDateTime expiredDateTime;
 
-    public boolean isNotExpired() {
-        return LocalDateTime.now().isBefore(expiredDateTime);
-    }
 }
