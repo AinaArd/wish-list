@@ -25,6 +25,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private TokensRepository tokensRepository;
 
+    @Value("${token.expired}")
+    private Integer expiredSecondsForToken;
+
     @Autowired
     public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
         this.usersRepository = usersRepository;
@@ -41,9 +44,6 @@ public class UserService {
                 .build();
         usersRepository.save(newUser);
     }
-
-    @Value("${token.expired}")
-    private Integer expiredSecondsForToken;
 
     public TokenDto login(UserForm userForm) {
         Optional<User> userCandidate = usersRepository.findByLogin(userForm.getLogin());
