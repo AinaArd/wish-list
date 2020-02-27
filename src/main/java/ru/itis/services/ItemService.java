@@ -2,7 +2,7 @@ package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itis.forms.ItemForm;
+import ru.itis.dto.ItemDto;
 import ru.itis.models.Item;
 import ru.itis.models.WishList;
 import ru.itis.repositories.ItemsRepository;
@@ -21,14 +21,14 @@ public class ItemService {
         this.wishListService = wishListService;
     }
 
-    public void addNewItem(ItemForm itemForm, Long listId) {
+    public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
         Item newItem = Item.builder()
-                .name(itemForm.getName())
-                .price(itemForm.getPrice())
-                .link(itemForm.getLink())
+                .name(itemDto.getName())
+                .price(itemDto.getPrice())
+                .link(itemDto.getLink())
                 .wishList(wishList)
-                .description(itemForm.getDescription())
+                .description(itemDto.getDescription())
                 .build();
         itemsRepository.save(newItem);
     }

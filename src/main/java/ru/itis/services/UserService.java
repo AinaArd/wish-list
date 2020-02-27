@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
 import ru.itis.dto.UserDto;
-import ru.itis.forms.UserForm;
 import ru.itis.models.Role;
 import ru.itis.models.Token;
 import ru.itis.models.User;
@@ -35,18 +34,18 @@ public class UserService {
         this.tokensRepository = tokensRepository;
     }
 
-    public void addUser(UserForm userForm) {
-        String hashPassword = passwordEncoder.encode(userForm.getPassword());
+    public void addUser(UserDto userDto) {
+        String hashPassword = passwordEncoder.encode(userDto.getPassword());
         User newUser = User.builder()
-                .login(userForm.getLogin())
+                .login(userDto.getLogin())
                 .password(hashPassword)
                 .role(Role.AUTHOR)
                 .build();
         usersRepository.save(newUser);
     }
 
-    public TokenDto login(UserForm userForm) {
-        Optional<User> userCandidate = usersRepository.findByLogin(userForm.getLogin());
+    public TokenDto login(UserDto userDto) {
+        Optional<User> userCandidate = usersRepository.findByLogin(userDto.getLogin());
         String value = UUID.randomUUID().toString();
         Token token = Token.builder()
                 .createdAt(LocalDateTime.now())
@@ -55,7 +54,7 @@ public class UserService {
                 .build();
         if (userCandidate.isPresent()) {
             User user = userCandidate.get();
-            if (passwordEncoder.matches(userForm.getPassword(), user.getPassword())) {
+            if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
                 token.setUser(user);
                 tokensRepository.save(token);
                 return TokenDto.from(token);

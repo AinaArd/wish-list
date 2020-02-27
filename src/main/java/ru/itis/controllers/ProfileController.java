@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.UserDto;
+import ru.itis.dto.ResponseUserDto;
 import ru.itis.dto.WishListDto;
 import ru.itis.models.User;
 import ru.itis.services.UserService;
@@ -30,13 +30,13 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public UserDto getProfilePage(@RequestHeader(name = "AUTH") String token) {
+    public ResponseUserDto getProfilePage(@RequestHeader(name = "AUTH") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return UserDto.from(userCandidate.get());
+            return ResponseUserDto.from(userCandidate.get());
         } else {
             User defaultUserDto  = User.getDefaultUser();
-            return UserDto.from(defaultUserDto);
+            return ResponseUserDto.from(defaultUserDto);
         }
     }
 
