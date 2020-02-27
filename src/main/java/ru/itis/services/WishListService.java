@@ -23,12 +23,10 @@ public class WishListService {
     public WishList addNewWishList(String title, String token) {
         if (userService.findUserByToken(token).isPresent()) {
             User currentUser = userService.findUserByToken(token).get();
-            WishList newWL = WishList.builder()
-                    .title(title)
-                    .author(currentUser)
-                    .build();
+            WishList newWL = new WishList(title, currentUser);
             currentUser.getWishLists().add(newWL);
-            return wishListRepository.save(newWL);
+            wishListRepository.save(newWL);
+            return newWL;
         }
         return WishList.getDefault();
     }

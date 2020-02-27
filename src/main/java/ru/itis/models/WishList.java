@@ -40,4 +40,9 @@ public class WishList {
                 .items(null)
                 .build();
     }
+
+    public WishList(String title, User author) {
+        this.title = title;
+        this.author = author;
+    }
 }
