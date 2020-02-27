@@ -14,13 +14,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import ru.itis.security.filters.TokenAuthenticationFilter;
 import ru.itis.security.providers.TokenAuthenticationProvider;
 
-@Configuration // говорим, что у нас конфигурационный класс
-@EnableGlobalMethodSecurity(prePostEnabled = true) // включаем проверку безопасности через аннотации
-@EnableWebSecurity // включаем безопасность
-@ComponentScan("ru.itis") // говорим, чтобы искал все компоненты в наших пакетах
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
+@ComponentScan("ru.itis")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // подключем провайдер, который мы написали
     private TokenAuthenticationProvider provider;
 
     @Autowired
@@ -34,23 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    // конфигурируем AuthenticationManager
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // прикручиваем наш провайдер
         auth.authenticationProvider(provider);
     }
-    // конфигурирем саму безопасность
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // отключаем csrf
         http.csrf().disable();
         http.cors().disable();
-        // отключаем сессии
         http.sessionManagement().disable();
-        // добавляем наш фильтр
         http.addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class);
-        // говорим, что разрешаем Swagger
         http.authorizeRequests().antMatchers("/swagger-ui.html#/**").permitAll();
     }
 }
