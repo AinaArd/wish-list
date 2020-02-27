@@ -25,7 +25,8 @@ public class WishListController {
     @GetMapping("/lists/{list-id}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
-    public WishList getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "AUTH") String token) {
+    public WishList getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "Authorization")
+            String token) {
 //      TODO: if anonym --> ability to reserve an item
         WishList defaultWishList = WishList.getDefault();
         return wishListService.findWishListById(listId).orElse(defaultWishList);
@@ -35,7 +36,8 @@ public class WishListController {
     @PostMapping("/lists/{list-id}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Add new item to wish list")
-    public void addNewItem(@PathVariable("list-id") Long listId, ItemDto itemDto, @RequestHeader(name = "AUTH") String token) {
+    public void addNewItem(@PathVariable("list-id") Long listId, ItemDto itemDto, @RequestHeader(name = "Authorization")
+            String token) {
         itemService.addNewItem(itemDto, listId);
     }
 
@@ -44,7 +46,7 @@ public class WishListController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete an item")
     public void deleteItem(@PathVariable("list-id") Long listId, @RequestParam("title") String itemName,
-                           @RequestHeader(name = "AUTH") String token) {
+                           @RequestHeader(name = "Authorization") String token) {
         itemService.removeByName(itemName);
     }
 }

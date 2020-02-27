@@ -19,7 +19,6 @@ import ru.itis.security.providers.TokenAuthenticationProvider;
 @EnableWebSecurity
 @ComponentScan("ru.itis")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     private TokenAuthenticationProvider provider;
 
     @Autowired

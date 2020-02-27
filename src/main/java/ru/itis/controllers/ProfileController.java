@@ -30,7 +30,7 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public ResponseUserDto getProfilePage(@RequestHeader(name = "AUTH") String token) {
+    public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
             return ResponseUserDto.from(userCandidate.get());
@@ -44,7 +44,7 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
+    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
         return WishListDto.from(wishListService.addNewWishList(title, token));
     }
 
@@ -52,7 +52,7 @@ public class ProfileController {
     @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
-    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
+    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token) {
         if(!wishListService.removeByTitle(title, token)) {
             return new ResponseEntity<>((HttpStatus.NOT_FOUND));
         }

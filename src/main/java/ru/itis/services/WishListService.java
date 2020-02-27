@@ -30,7 +30,7 @@ public class WishListService {
             currentUser.getWishLists().add(newWL);
             return wishListRepository.save(newWL);
         }
-        return null;
+        return WishList.getDefault();
     }
 
     public Optional<WishList> findWishListById(Long wishListId) {
