@@ -1,7 +1,7 @@
 package ru.itis.forms;
 
 import lombok.Data;
-import ru.itis.utils.UniqueLogin;
+import ru.itis.validators.UniqueLogin;
 
 import javax.validation.constraints.NotBlank;
 
