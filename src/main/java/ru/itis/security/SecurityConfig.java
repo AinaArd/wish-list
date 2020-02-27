@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import ru.itis.security.filters.TokenAuthenticationFilter;
 import ru.itis.security.providers.TokenAuthenticationProvider;
@@ -22,14 +20,13 @@ import ru.itis.security.providers.TokenAuthenticationProvider;
 @ComponentScan("ru.itis") // говорим, чтобы искал все компоненты в наших пакетах
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
     // подключем провайдер, который мы написали
-    @Autowired
     private TokenAuthenticationProvider provider;
+
+    @Autowired
+    public SecurityConfig(TokenAuthenticationProvider provider) {
+        this.provider = provider;
+    }
 
     @Bean
     @Override

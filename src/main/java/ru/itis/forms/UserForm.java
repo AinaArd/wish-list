@@ -10,8 +10,8 @@ public class UserForm {
 
     @NotBlank
     @UniqueLogin
-    public String login;
+    private String login;
 
     @NotBlank
-    public String password;
+    private String password;
 }

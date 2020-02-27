@@ -9,7 +9,7 @@ import ru.itis.models.WishList;
 import ru.itis.services.ItemService;
 import ru.itis.services.WishListService;
 
-@RestController
+@RestController("/lists/{list-id}")
 public class WishListController {
 
     private ItemService itemService;
@@ -22,7 +22,7 @@ public class WishListController {
     }
 
     @CrossOrigin
-    @GetMapping("/lists/{list-id}")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
     public WishList getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "AUTH") String token) {
@@ -32,7 +32,7 @@ public class WishListController {
     }
 
     @CrossOrigin
-    @PostMapping("/lists/{list-id}")
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Add new item to wish list")
     public void addNewItem(@PathVariable("list-id") Long listId, ItemForm itemForm, @RequestHeader(name = "AUTH") String token) {
@@ -40,7 +40,7 @@ public class WishListController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/lists/{list-id}")
+    @DeleteMapping
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete an item")
     public void deleteItem(@PathVariable("list-id") Long listId, @RequestParam("title") String itemName,

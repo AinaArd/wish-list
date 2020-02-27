@@ -1,5 +1,6 @@
 package ru.itis.security.filters;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.itis.security.auth.TokenAuthentication;
 
@@ -8,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class TokenAuthenticationFilter implements Filter {
-    private final static String AUTH_HEADER = "AUTH";
+
+    @Value("${auth.header}")
+    private String AUTH_HEADER;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
