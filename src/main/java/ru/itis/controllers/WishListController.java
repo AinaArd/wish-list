@@ -1,8 +1,6 @@
 package ru.itis.controllers;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.ItemDto;
 import ru.itis.models.WishList;
@@ -22,30 +20,23 @@ public class WishListController {
     }
 
     @CrossOrigin
-    @GetMapping("/lists/{list-id}")
-    @PreAuthorize("isAuthenticated()")
-    @ApiOperation("Get a single wish list")
-    public WishList getWishList(@PathVariable("list-id") Long listId, @RequestHeader(name = "Authorization")
+    @GetMapping("/lists/{listId}")
+    public WishList getWishList(@PathVariable Long listId, @RequestHeader(name = "Authorization")
             String token) {
-//      TODO: if anonym --> ability to reserve an item
         WishList defaultWishList = WishList.getDefault();
         return wishListService.findWishListById(listId).orElse(defaultWishList);
     }
 
     @CrossOrigin
-    @PostMapping("/lists/{list-id}")
-    @PreAuthorize("isAuthenticated()")
-    @ApiOperation("Add new item to wish list")
-    public void addNewItem(@PathVariable("list-id") Long listId, ItemDto itemDto, @RequestHeader(name = "Authorization")
+    @PostMapping("/lists/{listId}")
+    public void addNewItem(@PathVariable Long listId, ItemDto itemDto, @RequestHeader(name = "Authorization")
             String token) {
         itemService.addNewItem(itemDto, listId);
     }
 
     @CrossOrigin
-    @DeleteMapping("/lists/{list-id}")
-    @PreAuthorize("isAuthenticated()")
-    @ApiOperation("Delete an item")
-    public void deleteItem(@PathVariable("list-id") Long listId, @RequestParam("title") String itemName,
+    @DeleteMapping("/lists/{listId}")
+    public void deleteItem(@PathVariable Long listId, @RequestParam("title") String itemName,
                            @RequestHeader(name = "Authorization") String token) {
         itemService.removeByName(itemName);
     }
