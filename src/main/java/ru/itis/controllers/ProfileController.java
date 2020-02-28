@@ -1,7 +1,6 @@
 package ru.itis.controllers;
 
 import io.swagger.annotations.ApiOperation;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,19 +8,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.ResponseUserDto;
 import ru.itis.dto.WishListDto;
-import ru.itis.mappers.UserMapper;
 import ru.itis.models.User;
+import ru.itis.models.WishList;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
 import java.util.Optional;
+
+import static ru.itis.mappers.UserMapper.USER_MAPPER;
+import static ru.itis.mappers.WishListMapper.WISH_LIST_MAPPER;
 
 @RestController
 public class ProfileController {
 
     private WishListService wishListService;
     private UserService userService;
-    private static final UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Autowired
     public ProfileController(WishListService wishListService, UserService userService) {
@@ -36,10 +37,10 @@ public class ProfileController {
     public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return INSTANCE.userToResponseUserDto(userCandidate.get());
+            return USER_MAPPER.userToResponseUserDto(userCandidate.get());
         } else {
             User defaultUser = User.getDefaultUser();
-            return INSTANCE.userToResponseUserDto(defaultUser);
+            return USER_MAPPER.userToResponseUserDto(defaultUser);
         }
     }
 
@@ -48,7 +49,8 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
     public WishListDto createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
-        return WishListDto.from(wishListService.addNewWishList(title, token));
+        WishList newWishList = wishListService.addNewWishList(title, token);
+        return WISH_LIST_MAPPER.wishListToWishListDto(newWishList);
     }
 
     @CrossOrigin
