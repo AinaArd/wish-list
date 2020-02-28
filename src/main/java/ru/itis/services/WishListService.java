@@ -24,7 +24,6 @@ public class WishListService {
         if (userService.findUserByToken(token).isPresent()) {
             User currentUser = userService.findUserByToken(token).get();
             WishList newWL = new WishList(title, currentUser);
-            currentUser.getWishLists().add(newWL);
             wishListRepository.save(newWL);
             return newWL;
         }
