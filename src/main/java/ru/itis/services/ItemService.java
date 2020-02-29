@@ -9,6 +9,8 @@ import ru.itis.repositories.ItemsRepository;
 
 import java.util.Optional;
 
+import static ru.itis.mappers.ItemMapper.ITEM_MAPPER;
+
 @Service
 public class ItemService {
 
@@ -23,13 +25,8 @@ public class ItemService {
 
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        Item newItem = Item.builder()
-                .name(itemDto.getName())
-                .price(itemDto.getPrice())
-                .link(itemDto.getLink())
-                .wishList(wishList)
-                .description(itemDto.getDescription())
-                .build();
+        itemDto.setWishList(wishList);
+        Item newItem = ITEM_MAPPER.itemDtoToItem(itemDto);
         itemsRepository.save(newItem);
     }
 
