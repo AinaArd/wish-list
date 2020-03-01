@@ -8,3 +8,8 @@ Wish list - web app, where users can:
 - not authorized users can reserve items in the users wish lists in order to gift them to users
 - not authorized users can search for users and look at their profiles
 
+Project requirements:
+- Maven 3+
+- Postgres 9+
+- Java 8
+

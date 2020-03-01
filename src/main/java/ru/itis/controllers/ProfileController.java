@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.ResponseUserDto;
-import ru.itis.dto.WishListDto;
 import ru.itis.models.User;
+import ru.itis.models.WishList;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,7 +30,7 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
+    public Map<String, Object> getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         return ResponseUserDto.from(userCandidate.orElse(User.getDefaultUser()));
     }
@@ -39,8 +39,8 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
-        return WishListDto.from(wishListService.addNewWishList(title, token));
+    public WishList createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
+        return wishListService.addNewWishList(title, token);
     }
 
     @CrossOrigin

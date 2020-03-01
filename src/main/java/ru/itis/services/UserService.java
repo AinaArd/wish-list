@@ -13,9 +13,7 @@ import ru.itis.repositories.TokensRepository;
 import ru.itis.repositories.UsersRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -76,7 +74,10 @@ public class UserService {
         return usersRepository.findAllByLoginIsContaining(login);
     }
 
-    void save(User user) {
-        usersRepository.save(user);
+    public Map<String, Object> userToMap(User user) {
+        Map<String, Object> userProperties = new HashMap<>();
+        userProperties.put("login", user.getLogin());
+        userProperties.put("wishLists", user.getWishLists());
+        return userProperties;
     }
 }

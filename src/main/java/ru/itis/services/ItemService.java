@@ -23,13 +23,7 @@ public class ItemService {
 
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        Item newItem = Item.builder()
-                .name(itemDto.getName())
-                .price(itemDto.getPrice())
-                .link(itemDto.getLink())
-                .wishList(wishList)
-                .description(itemDto.getDescription())
-                .build();
+        Item newItem = itemDtoToItem(itemDto,wishList);
         itemsRepository.save(newItem);
     }
 
@@ -46,5 +40,13 @@ public class ItemService {
         return wishListService
                 .findWishListById(listId)
                 .orElseThrow(() -> new IllegalArgumentException("Can not find such wish list"));
+    }
+
+    private Item itemDtoToItem(ItemDto itemDto, WishList wishList) {
+        return new Item(itemDto.getName(),
+                itemDto.getPrice(),
+                itemDto.getLink(),
+                itemDto.getDescription(),
+                wishList);
     }
 }
