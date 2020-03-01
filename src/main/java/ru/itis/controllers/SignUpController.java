@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.itis.forms.UserForm;
+import ru.itis.dto.UserDto;
 import ru.itis.services.UserService;
 
 import javax.validation.Valid;
@@ -26,7 +26,7 @@ public class SignUpController {
     @PostMapping("/signUp")
     @PreAuthorize("permitAll()")
     @ApiOperation("Sign up a new user")
-    public void signUpNewUser(@Valid @RequestBody UserForm userForm) {
-        userService.addUser(userForm);
+    public void signUpNewUser(@Valid @RequestBody UserDto userDto) {
+        userService.addUser(userDto);
     }
 }

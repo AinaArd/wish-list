@@ -2,7 +2,7 @@ package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itis.forms.ItemForm;
+import ru.itis.dto.ItemDto;
 import ru.itis.models.Item;
 import ru.itis.models.WishList;
 import ru.itis.repositories.ItemsRepository;
@@ -21,15 +21,9 @@ public class ItemService {
         this.wishListService = wishListService;
     }
 
-    public void addNewItem(ItemForm itemForm, Long listId) {
+    public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        Item newItem = Item.builder()
-                .name(itemForm.getName())
-                .price(itemForm.getPrice())
-                .link(itemForm.getLink())
-                .wishList(wishList)
-                .description(itemForm.getDescription())
-                .build();
+        Item newItem = itemDtoToItem(itemDto,wishList);
         itemsRepository.save(newItem);
     }
 
@@ -46,5 +40,13 @@ public class ItemService {
         return wishListService
                 .findWishListById(listId)
                 .orElseThrow(() -> new IllegalArgumentException("Can not find such wish list"));
+    }
+
+    private Item itemDtoToItem(ItemDto itemDto, WishList wishList) {
+        return new Item(itemDto.getName(),
+                itemDto.getPrice(),
+                itemDto.getLink(),
+                itemDto.getDescription(),
+                wishList);
     }
 }

@@ -1,4 +1,4 @@
-package ru.itis.utils;
+package ru.itis.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.itis.repositories.UsersRepository;

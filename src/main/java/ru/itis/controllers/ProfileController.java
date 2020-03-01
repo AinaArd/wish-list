@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.UserDto;
-import ru.itis.dto.WishListDto;
 import ru.itis.models.User;
+import ru.itis.models.WishList;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,13 +30,13 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public UserDto getProfilePage(@RequestHeader(name = "AUTH") String token) {
+    public Map<String, Object> getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return UserDto.from(userCandidate.get());
+            return userService.userToMap(userCandidate.get());
         } else {
-            User defaultUserDto  = User.getDefaultUser();
-            return UserDto.from(defaultUserDto);
+            User defaultUser = User.getDefaultUser();
+            return userService.userToMap(defaultUser);
         }
     }
 
@@ -44,16 +44,16 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("AUTH") String token) {
-        return WishListDto.from(wishListService.addNewWishList(title, token));
+    public WishList createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
+        return wishListService.addNewWishList(title, token);
     }
 
     @CrossOrigin
     @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
-    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("AUTH") String token) {
-        if(!wishListService.removeByTitle(title, token)) {
+    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token) {
+        if (!wishListService.removeByTitle(title, token)) {
             return new ResponseEntity<>((HttpStatus.NOT_FOUND));
         }
         return ResponseEntity.ok().build();

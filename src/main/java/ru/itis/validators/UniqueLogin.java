@@ -1,4 +1,4 @@
-package ru.itis.utils;
+package ru.itis.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

@@ -1,7 +1,6 @@
 package ru.itis.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table
-@Builder
 public class Item {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +24,11 @@ public class Item {
     @JoinColumn(name = "wishList")
     private WishList wishList;
 
-    //TODO: add photo
+    public Item(String name, int price, String link, String description, WishList wishList) {
+        this.name = name;
+        this.price = price;
+        this.link = link;
+        this.description = description;
+        this.wishList = wishList;
+    }
 }
