@@ -54,7 +54,7 @@ public class ProfileController {
     @ApiOperation("Delete a wish list")
     public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token) {
         if(!wishListService.removeByTitle(title, token)) {
-            return new ResponseEntity<>((HttpStatus.NOT_FOUND));
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok().build();
     }
