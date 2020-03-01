@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import ru.itis.security.filters.TokenAuthenticationFilter;
 import ru.itis.security.providers.TokenAuthenticationProvider;
@@ -24,6 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public SecurityConfig(TokenAuthenticationProvider provider) {
         this.provider = provider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
