@@ -8,7 +8,7 @@ import ru.itis.models.Item;
 
 @Mapper
 public interface ItemMapper {
-    ItemMapper ITEM_MAPPER = Mappers.getMapper(ItemMapper.class);
+    ItemMapper ItemMapper = Mappers.getMapper(ItemMapper.class);
 
     @Mapping(target = "id", ignore = true)
     Item itemDtoToItem(ItemDto source);

@@ -9,7 +9,7 @@ import ru.itis.repositories.ItemsRepository;
 
 import java.util.Optional;
 
-import static ru.itis.mappers.ItemMapper.ITEM_MAPPER;
+import static ru.itis.mappers.ItemMapper.ItemMapper;
 
 @Service
 public class ItemService {
@@ -26,7 +26,7 @@ public class ItemService {
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
         itemDto.setWishList(wishList);
-        Item newItem = ITEM_MAPPER.itemDtoToItem(itemDto);
+        Item newItem = ItemMapper.itemDtoToItem(itemDto);
         itemsRepository.save(newItem);
     }
 

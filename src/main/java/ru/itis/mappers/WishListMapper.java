@@ -9,7 +9,7 @@ import ru.itis.models.WishList;
 
 @Mapper
 public interface WishListMapper {
-    WishListMapper WISH_LIST_MAPPER = Mappers.getMapper(WishListMapper.class);
+    WishListMapper WishListMapper = Mappers.getMapper(WishListMapper.class);
 
     @Mappings({
             @Mapping(target = "author", source = "author.login"),

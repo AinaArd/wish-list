@@ -25,8 +25,7 @@ public class WishListController {
     @GetMapping("/lists/{listId}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
-    public WishList getWishList(@PathVariable Long listId, @RequestHeader(name = "Authorization")
-            String token) {
+    public WishList getWishList(@PathVariable Long listId, @RequestHeader(name = "Authorization") String token) {
         WishList defaultWishList = WishList.getDefault();
         return wishListService.findWishListById(listId).orElse(defaultWishList);
     }
@@ -35,8 +34,7 @@ public class WishListController {
     @PostMapping("/lists/{listId}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Add new item to wish list")
-    public void addNewItem(@PathVariable Long listId, ItemDto itemDto, @RequestHeader(name = "Authorization")
-            String token) {
+    public void addNewItem(@PathVariable Long listId, ItemDto itemDto, @RequestHeader(name = "Authorization") String token) {
         itemService.addNewItem(itemDto, listId);
     }
 
@@ -44,8 +42,7 @@ public class WishListController {
     @DeleteMapping("/lists/{listId}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete an item")
-    public void deleteItem(@PathVariable Long listId, @RequestParam("title") String itemName,
-                           @RequestHeader(name = "Authorization") String token) {
+    public void deleteItem(@PathVariable Long listId, @RequestParam("title") String itemName, @RequestHeader(name = "Authorization") String token) {
         itemService.removeByName(itemName);
     }
 }

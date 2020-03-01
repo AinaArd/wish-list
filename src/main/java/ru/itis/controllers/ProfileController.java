@@ -15,8 +15,8 @@ import ru.itis.services.WishListService;
 
 import java.util.Optional;
 
-import static ru.itis.mappers.UserMapper.USER_MAPPER;
-import static ru.itis.mappers.WishListMapper.WISH_LIST_MAPPER;
+import static ru.itis.mappers.UserMapper.UserMapper;
+import static ru.itis.mappers.WishListMapper.WishListMapper;
 
 @RestController
 public class ProfileController {
@@ -37,10 +37,10 @@ public class ProfileController {
     public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return USER_MAPPER.userToResponseUserDto(userCandidate.get());
+            return UserMapper.userToResponseUserDto(userCandidate.get());
         } else {
             User defaultUser = User.getDefaultUser();
-            return USER_MAPPER.userToResponseUserDto(defaultUser);
+            return UserMapper.userToResponseUserDto(defaultUser);
         }
     }
 
@@ -50,7 +50,7 @@ public class ProfileController {
     @ApiOperation("Create new wish list")
     public WishListDto createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
         WishList newWishList = wishListService.addNewWishList(title, token);
-        return WISH_LIST_MAPPER.wishListToWishListDto(newWishList);
+        return WishListMapper.wishListToWishListDto(newWishList);
     }
 
     @CrossOrigin

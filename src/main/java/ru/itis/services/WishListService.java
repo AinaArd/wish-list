@@ -21,14 +21,13 @@ public class WishListService {
     }
 
     public WishList addNewWishList(String title, String token) {
-        if (userService.findUserByToken(token).isPresent()) {
-            User currentUser = userService.findUserByToken(token).get();
-            WishList newWL = new WishList(title, currentUser);
-            currentUser.getWishLists().add(newWL);
-            wishListRepository.save(newWL);
-            return newWL;
+        Optional<User> user = userService.findUserByToken(token);
+        if (!user.isPresent()) {
+            return WishList.getDefault();
         }
-        return WishList.getDefault();
+        WishList newWishList = new WishList(title, user.get());
+        wishListRepository.save(newWishList);
+        return newWishList;
     }
 
     public Optional<WishList> findWishListById(Long wishListId) {
@@ -37,16 +36,7 @@ public class WishListService {
 
     public boolean removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
-        if (wishListCandidate.isPresent()) {
-            if (userService.findUserByToken(token).isPresent()) {
-                User currentUser = userService.findUserByToken(token).get();
-                currentUser.getWishLists().remove(wishListCandidate.get());
-                userService.save(currentUser);
-                wishListRepository.delete(wishListCandidate.get());
-            }
-            return true;
-        } else {
-            return false;
-        }
+        wishListCandidate.ifPresent(wishList -> wishListRepository.delete(wishList));
+        return false;
     }
 }

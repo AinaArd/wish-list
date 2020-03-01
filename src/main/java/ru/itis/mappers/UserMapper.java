@@ -7,6 +7,6 @@ import ru.itis.models.User;
 
 @Mapper
 public interface UserMapper {
-    UserMapper USER_MAPPER = Mappers.getMapper(UserMapper.class);
+    UserMapper UserMapper = Mappers.getMapper(UserMapper.class);
     ResponseUserDto userToResponseUserDto(User source);
 }
