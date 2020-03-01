@@ -32,12 +32,7 @@ public class ProfileController {
     @ApiOperation("View user profile page")
     public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
-        if (userCandidate.isPresent()) {
-            return ResponseUserDto.from(userCandidate.get());
-        } else {
-            User defaultUserDto  = User.getDefaultUser();
-            return ResponseUserDto.from(defaultUserDto);
-        }
+        return ResponseUserDto.from(userCandidate.orElse(User.getDefaultUser()));
     }
 
     @CrossOrigin
@@ -53,7 +48,7 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
     public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token) {
-        if(!wishListService.removeByTitle(title, token)) {
+        if (!wishListService.removeByTitle(title, token)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok().build();
