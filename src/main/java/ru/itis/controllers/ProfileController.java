@@ -6,17 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.ResponseUserDto;
-import ru.itis.dto.WishListDto;
 import ru.itis.models.User;
 import ru.itis.models.WishList;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
+import java.util.Map;
 import java.util.Optional;
-
-import static ru.itis.mappers.UserMapper.UserMapper;
-import static ru.itis.mappers.WishListMapper.WishListMapper;
 
 @RestController
 public class ProfileController {
@@ -34,13 +30,13 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public ResponseUserDto getProfilePage(@RequestHeader(name = "Authorization") String token) {
+    public Map<String, Object> getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return UserMapper.userToResponseUserDto(userCandidate.get());
+            return userService.userToMap(userCandidate.get());
         } else {
             User defaultUser = User.getDefaultUser();
-            return UserMapper.userToResponseUserDto(defaultUser);
+            return userService.userToMap(defaultUser);
         }
     }
 
@@ -48,9 +44,8 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public WishListDto createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
-        WishList newWishList = wishListService.addNewWishList(title, token);
-        return WishListMapper.wishListToWishListDto(newWishList);
+    public WishList createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
+        return wishListService.addNewWishList(title, token);
     }
 
     @CrossOrigin

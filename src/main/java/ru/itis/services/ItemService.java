@@ -9,8 +9,6 @@ import ru.itis.repositories.ItemsRepository;
 
 import java.util.Optional;
 
-import static ru.itis.mappers.ItemMapper.ItemMapper;
-
 @Service
 public class ItemService {
 
@@ -25,8 +23,7 @@ public class ItemService {
 
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        itemDto.setWishList(wishList);
-        Item newItem = ItemMapper.itemDtoToItem(itemDto);
+        Item newItem = itemDtoToItem(itemDto,wishList);
         itemsRepository.save(newItem);
     }
 
@@ -43,5 +40,13 @@ public class ItemService {
         return wishListService
                 .findWishListById(listId)
                 .orElseThrow(() -> new IllegalArgumentException("Can not find such wish list"));
+    }
+
+    private Item itemDtoToItem(ItemDto itemDto, WishList wishList) {
+        return new Item(itemDto.getName(),
+                itemDto.getPrice(),
+                itemDto.getLink(),
+                itemDto.getDescription(),
+                wishList);
     }
 }
