@@ -22,9 +22,6 @@ public class WishListService {
 
     public WishList addNewWishList(String title, String token) {
         Optional<User> user = userService.findUserByToken(token);
-        if (!user.isPresent()) {
-            return WishList.getDefault();
-        }
         WishList newWishList = new WishList(title, user.get());
         wishListRepository.save(newWishList);
         return newWishList;
