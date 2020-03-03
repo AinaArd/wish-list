@@ -23,7 +23,7 @@ public class ItemService {
 
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        Item newItem = itemDtoToItem(itemDto,wishList);
+        Item newItem = itemDtoToItem(itemDto, wishList);
         itemsRepository.save(newItem);
     }
 
@@ -49,4 +49,9 @@ public class ItemService {
                 itemDto.getDescription(),
                 wishList);
     }
+
+    public Optional<Item> findItemByName(String name) {
+        return itemsRepository.findByName(name);
+    }
+
 }

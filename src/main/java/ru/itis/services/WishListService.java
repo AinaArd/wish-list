@@ -6,6 +6,7 @@ import ru.itis.models.User;
 import ru.itis.models.WishList;
 import ru.itis.repositories.WishListRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +36,14 @@ public class WishListService {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
         wishListCandidate.ifPresent(wishList -> wishListRepository.delete(wishList));
         return false;
+    }
+
+    public Optional<WishList> findWishListByTitle(String title) {
+        return wishListRepository.findByTitle(title);
+    }
+
+    public List<WishList> findAllByAuthor(String token) {
+        Optional<User> user = userService.findUserByToken(token);
+        return wishListRepository.findAllByAuthor(user.get());
     }
 }

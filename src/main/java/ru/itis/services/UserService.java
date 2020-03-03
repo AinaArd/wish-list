@@ -10,7 +10,7 @@ import ru.itis.models.Role;
 import ru.itis.models.Token;
 import ru.itis.models.User;
 import ru.itis.repositories.TokensRepository;
-import ru.itis.repositories.UsersRepository;
+import ru.itis.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,7 +18,7 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private TokensRepository tokensRepository;
 
@@ -26,8 +26,8 @@ public class UserService {
     private Integer expiredSecondsForToken;
 
     @Autowired
-    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
-        this.usersRepository = usersRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokensRepository = tokensRepository;
     }
@@ -39,11 +39,11 @@ public class UserService {
                 .password(hashPassword)
                 .role(Role.AUTHOR)
                 .build();
-        usersRepository.save(newUser);
+        userRepository.save(newUser);
     }
 
     public TokenDto login(UserDto userDto) {
-        Optional<User> userCandidate = usersRepository.findByLogin(userDto.getLogin());
+        Optional<User> userCandidate = userRepository.findByLogin(userDto.getLogin());
         String value = UUID.randomUUID().toString();
         Token token = Token.builder()
                 .createdAt(LocalDateTime.now())
@@ -67,11 +67,11 @@ public class UserService {
 
     public Optional<User> findUserByToken(String token) {
         String userLogin = tokensRepository.findUsernameByValue(token);
-        return usersRepository.findByLogin(userLogin);
+        return userRepository.findByLogin(userLogin);
     }
 
     public List<UserDto> getUsersByLogin(String login) {
-        return usersRepository.findAllByLoginIsContaining(login);
+        return userRepository.findAllByLoginIsContaining(login);
     }
 
     public Map<String, Object> userToMap(User user) {
@@ -79,5 +79,9 @@ public class UserService {
         userProperties.put("login", user.getLogin());
         userProperties.put("wishLists", user.getWishLists());
         return userProperties;
+    }
+
+    public Optional<User> findUserByLogin(String login) {
+        return userRepository.findByLogin(login);
     }
 }

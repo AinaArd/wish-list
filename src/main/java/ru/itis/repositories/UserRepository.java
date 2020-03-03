@@ -7,7 +7,7 @@ import ru.itis.models.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UsersRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
     List<UserDto> findAllByLoginIsContaining(String login);
 }
