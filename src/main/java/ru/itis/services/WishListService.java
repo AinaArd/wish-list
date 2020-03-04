@@ -44,6 +44,6 @@ public class WishListService {
 
     public List<WishList> findAllByAuthor(String token) {
         Optional<User> user = userService.findUserByToken(token);
-        return wishListRepository.findAllByAuthor(user.get());
+        return user.get().getWishLists();
     }
 }

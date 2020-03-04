@@ -25,13 +25,13 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void addUserWorksCorrect() {
+    public void addUserWorksGood() {
         Optional<User> found = userService.findUserByLogin(userDto.getLogin());
         found.ifPresent(user -> assertEquals(user.getLogin(), userDto.getLogin()));
     }
 
     @Test
-    public void loginUserWorksOk() {
+    public void loginUserWorksGood() {
         TokenDto token = userService.login(userDto);
         assertNotNull(token.getValue());
     }

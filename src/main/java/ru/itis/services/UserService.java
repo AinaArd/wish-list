@@ -1,7 +1,6 @@
 package ru.itis.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
@@ -22,8 +21,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private TokensRepository tokensRepository;
 
-    @Value("${token.expired}")
-    private Integer expiredSecondsForToken;
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
@@ -45,6 +42,7 @@ public class UserService {
     public TokenDto login(UserDto userDto) {
         Optional<User> userCandidate = userRepository.findByLogin(userDto.getLogin());
         String value = UUID.randomUUID().toString();
+        long expiredSecondsForToken = 14L;
         Token token = Token.builder()
                 .createdAt(LocalDateTime.now())
                 .expiredDateTime(LocalDateTime.now().plusSeconds(expiredSecondsForToken))

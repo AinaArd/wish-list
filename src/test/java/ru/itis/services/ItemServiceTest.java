@@ -21,9 +21,10 @@ public class ItemServiceTest {
     private ItemService itemService;
 
     @Test
-    public void addItemWorksOk() {
+    public void addItemWorksGood() {
         itemService.addNewItem(itemDto, 1L);
         Optional<Item> found = itemService.findItemByName(itemDto.getName());
         found.ifPresent(item -> assertEquals(itemDto.getName(), item.getName()));
+        found.orElseThrow(IllegalArgumentException::new);
     }
 }
