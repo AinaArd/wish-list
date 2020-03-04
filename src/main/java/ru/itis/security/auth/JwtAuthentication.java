@@ -2,6 +2,7 @@ package ru.itis.security.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import ru.itis.security.details.UserDetailsImpl;
@@ -11,9 +12,10 @@ import java.util.Collection;
 public class JwtAuthentication implements Authentication {
     private UserDetailsImpl userDetails;
     private String token;
-
     private boolean isAuthenticated;
-    private static final String secretKey = "ainaisthebest";
+
+    @Value("jwt.secret")
+    private String secretKey;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -3,16 +3,13 @@ package ru.itis.controllers;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.dto.ResponseUserDto;
+import ru.itis.dto.ResponseDto;
 import ru.itis.models.User;
-import ru.itis.models.WishList;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
