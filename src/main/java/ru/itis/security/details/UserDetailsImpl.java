@@ -1,5 +1,6 @@
 package ru.itis.security.details;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,9 +9,11 @@ import ru.itis.models.User;
 import java.util.Collection;
 import java.util.Collections;
 
+@Data
 public class UserDetailsImpl implements UserDetails {
 
     private User user;
+    private String token;
 
     public UserDetailsImpl(User user) {
         this.user = user;

@@ -1,23 +1,25 @@
 package ru.itis.security.auth;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import ru.itis.security.details.UserDetailsImpl;
 
 import java.util.Collection;
 
-public class TokenAuthentication implements Authentication {
+public class JwtAuthentication implements Authentication {
     private UserDetailsImpl userDetails;
     private String token;
+
     private boolean isAuthenticated;
+    private static final String secretKey = "ainaisthebest";
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (userDetails != null) {
             return userDetails.getAuthorities();
-        } else {
-            return null;
-        }
+        } else return null;
     }
 
     @Override
@@ -33,10 +35,8 @@ public class TokenAuthentication implements Authentication {
     @Override
     public Object getPrincipal() {
         if (userDetails != null) {
-            return userDetails.getUser();
-        } else {
-            return null;
-        }
+            return userDetails;
+        } else return null;
     }
 
     @Override
@@ -51,15 +51,25 @@ public class TokenAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return token;
+        return userDetails.getUsername();
+    }
+
+    public void setUserDetails(UserDetailsImpl userDetails) {
+        this.userDetails = userDetails;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
 
-    public void setUserDetails(UserDetailsImpl userDetails) {
-        this.userDetails = userDetails;
+    public String getLogin() {
+        Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return (String) body.get("login");
+    }
+
+    public Long getId() {
+        Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return (Long) body.get("id");
     }
 
     public String getToken() {
