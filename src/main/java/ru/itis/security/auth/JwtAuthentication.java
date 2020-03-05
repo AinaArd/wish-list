@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import ru.itis.security.details.UserDetailsImpl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class JwtAuthentication implements Authentication {
@@ -21,7 +22,9 @@ public class JwtAuthentication implements Authentication {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (userDetails != null) {
             return userDetails.getAuthorities();
-        } else return null;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
@@ -38,7 +41,9 @@ public class JwtAuthentication implements Authentication {
     public Object getPrincipal() {
         if (userDetails != null) {
             return userDetails;
-        } else return null;
+        } else {
+            return new Object();
+        }
     }
 
     @Override

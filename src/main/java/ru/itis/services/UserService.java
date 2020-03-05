@@ -48,29 +48,6 @@ public class UserService {
         usersRepository.save(newUser);
     }
 
-//    public TokenDto login(UserDto userDto) {
-//        Optional<User> userCandidate = usersRepository.findByLogin(userDto.getLogin());
-//        String value = UUID.randomUUID().toString();
-//        Token token = Token.builder()
-//                .createdAt(LocalDateTime.now())
-//                .expiredDateTime(LocalDateTime.now().plusSeconds(expiredSecondsForToken))
-//                .value(value)
-//                .build();
-//        if (userCandidate.isPresent()) {
-//            User user = userCandidate.get();
-//            if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-//                token.setUser(user);
-//                tokensRepository.save(token);
-//                return TokenDto.from(token);
-//            }
-//        } else {
-//            User defaultUser = User.getDefaultUser();
-//            token.setUser(defaultUser);
-//            return TokenDto.from(token);
-//        }
-//        return null;
-//    }
-
     public String createToken(User user) {
         return Jwts.builder()
                 .claim("login", user.getLogin())
@@ -91,7 +68,7 @@ public class UserService {
             User user = userCandidate.get();
             return new TokenDto(createToken(user));
         }
-        throw new IllegalArgumentException("Can not find such user");
+        return new TokenDto("Can not find such user");
     }
 
     public List<UserDto> getUsersByLogin(String login) {
