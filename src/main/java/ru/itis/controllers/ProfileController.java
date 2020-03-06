@@ -2,13 +2,13 @@ package ru.itis.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.models.User;
 import ru.itis.services.UserService;
 import ru.itis.services.WishListService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
@@ -27,12 +27,12 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("View user profile page")
-    public Object getProfilePage(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<?> getProfilePage(@RequestHeader(name = "Authorization") String token) {
         Optional<User> userCandidate = userService.findUserByToken(token);
         if (userCandidate.isPresent()) {
-            return userService.userToMap(userCandidate.get());
+            return ResponseEntity.ok(userService.userToMap(userCandidate.get()));
         } else {
-            return HttpServletResponse.SC_NOT_FOUND;
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -40,8 +40,8 @@ public class ProfileController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Create new wish list")
-    public Object createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
-        return wishListService.addNewWishList(title, token);
+    public ResponseEntity<?> createNewWL(@RequestParam String title, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(wishListService.addNewWishList(title, token));
     }
 
     @CrossOrigin
@@ -50,8 +50,8 @@ public class ProfileController {
     @ApiOperation("Delete a wish list")
     public Object deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token) {
         if (!wishListService.removeByTitle(title, token)) {
-            return HttpServletResponse.SC_NOT_FOUND;
+            return ResponseEntity.notFound().build();
         }
-        return wishListService.findAllByToken(token);
+        return ResponseEntity.ok(wishListService.findAllByAuthorToken(token));
     }
 }

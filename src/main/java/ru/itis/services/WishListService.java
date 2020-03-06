@@ -38,7 +38,7 @@ public class WishListService {
         return false;
     }
 
-    public List<WishList> findAllByToken(String token) {
+    public List<WishList> findAllByAuthorToken(String token) {
         Optional<User> user = userService.findUserByToken(token);
         return user.get().getWishLists();
     }
