@@ -24,4 +24,10 @@ public class Token {
     private LocalDateTime createdAt;
     private LocalDateTime expiredDateTime;
 
+    public Token(String value, User user, LocalDateTime createdAt, LocalDateTime expiredDateTime) {
+        this.value = value;
+        this.user = user;
+        this.createdAt = createdAt;
+        this.expiredDateTime = expiredDateTime;
+    }
 }
