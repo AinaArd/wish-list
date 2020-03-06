@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.itis</groupId>
-    <artifactId>wish_list</artifactId>
+    <artifactId>wish-list</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
 
