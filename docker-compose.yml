@@ -11,6 +11,8 @@ services:
       - 8080:8080
     networks:
       - backend
+    depends_on:
+      - db-wish-list
 
   db-wish-list:
     restart: always
