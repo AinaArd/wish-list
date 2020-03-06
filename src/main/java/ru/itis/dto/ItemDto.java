@@ -8,4 +8,9 @@ public class ItemDto {
     private int price;
     private String link;
     private String description;
+
+    public ItemDto(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
 }
