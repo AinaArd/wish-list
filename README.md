@@ -11,6 +11,7 @@ Wish list - web app, where users can:
 Project requirements:
 - Maven 3+
 - Java 8
+- Docker 18
 
 ### Run project
 ```bash
