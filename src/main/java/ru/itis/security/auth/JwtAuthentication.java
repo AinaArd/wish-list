@@ -9,6 +9,7 @@ import ru.itis.security.details.UserDetailsImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 public class JwtAuthentication implements Authentication {
     private UserDetailsImpl userDetails;
@@ -42,7 +43,7 @@ public class JwtAuthentication implements Authentication {
         if (userDetails != null) {
             return userDetails;
         } else {
-            return new Object();
+            throw new NoSuchElementException("Can not get user details");
         }
     }
 
