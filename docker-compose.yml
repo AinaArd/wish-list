@@ -4,8 +4,7 @@ services:
 
   wish-list:
     restart: always
-    build:
-      context: .
+    build: .
     hostname: wish-list
     ports:
       - 8080:8080

@@ -5,7 +5,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     password: postgres
     username: postgres
-    url: jdbc:postgresql://localhost:5432/wish-list
+    url: jdbc:postgresql://db-wish-list/wish-list
   jpa:
     hibernate:
       ddl-auto: update
