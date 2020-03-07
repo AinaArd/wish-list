@@ -34,7 +34,10 @@ public class WishListService {
 
     public boolean removeByTitle(String title, String token) {
         Optional<WishList> wishListCandidate = wishListRepository.findByTitle(title);
-        wishListCandidate.ifPresent(wishList -> wishListRepository.delete(wishList));
+        if (wishListCandidate.isPresent()) {
+            wishListRepository.delete(wishListCandidate.get());
+            return true;
+        }
         return false;
     }
 

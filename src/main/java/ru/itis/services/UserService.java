@@ -13,10 +13,7 @@ import ru.itis.models.User;
 import ru.itis.repositories.TokensRepository;
 import ru.itis.repositories.UsersRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -26,10 +23,7 @@ public class UserService {
     private TokensRepository tokensRepository;
 
     @Value("jwt.secret")
-    private  String key;
-
-    @Value("${token.expired}")
-    private Integer expiredSecondsForToken;
+    private String key;
 
     @Autowired
     public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
@@ -48,7 +42,7 @@ public class UserService {
         usersRepository.save(newUser);
     }
 
-    public String createToken(User user) {
+    private String createToken(User user) {
         return Jwts.builder()
                 .claim("login", user.getLogin())
                 .claim("id", user.getId())
@@ -68,7 +62,7 @@ public class UserService {
             User user = userCandidate.get();
             return new TokenDto(createToken(user));
         }
-        return new TokenDto("Can not find such user");
+        throw new NoSuchElementException("Can not find such user");
     }
 
     public List<UserDto> getUsersByLogin(String login) {

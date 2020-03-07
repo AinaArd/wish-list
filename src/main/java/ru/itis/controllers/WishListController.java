@@ -2,6 +2,7 @@ package ru.itis.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.ItemDto;
@@ -25,9 +26,9 @@ public class WishListController {
     @GetMapping("/lists/{listId}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Get a single wish list")
-    public WishList getWishList(@PathVariable Long listId, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<?> getWishList(@PathVariable Long listId, @RequestHeader(name = "Authorization") String token) {
         WishList defaultWishList = WishList.getDefault();
-        return wishListService.findWishListById(listId).orElse(defaultWishList);
+        return ResponseEntity.ok(wishListService.findWishListById(listId).orElse(defaultWishList));
     }
 
     @CrossOrigin
