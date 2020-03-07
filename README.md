@@ -10,6 +10,16 @@ Wish list - web app, where users can:
 
 Project requirements:
 - Maven 3+
-- Postgres 9+
 - Java 8
 
+### Run project
+```bash
+./step1_build_jars.sh
+./step2_build_dockers.sh
+./step3_run_app.sh  
+```
+
+### Stop apps and clean up resources
+```bash
+./step9_stop.sh
+```
