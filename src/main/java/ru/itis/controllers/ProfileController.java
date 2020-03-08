@@ -51,7 +51,7 @@ public class ProfileController {
     @DeleteMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete a wish list")
-    public Object deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token,
+    public ResponseEntity<?> deleteWishList(@RequestParam String title, @RequestHeader("Authorization") String token,
                                  Authentication authentication) {
         String login = authentication.getName();
         if (!wishListService.removeByTitle(title, login)) {
