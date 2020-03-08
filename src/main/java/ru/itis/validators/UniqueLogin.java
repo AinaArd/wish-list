@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 
 @Constraint(validatedBy = UniqueLoginValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 public @interface UniqueLogin {
     String message() default "There is already user with this login!";
 
     Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default{};
+    Class<? extends Payload>[] payload() default {};
 }

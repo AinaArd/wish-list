@@ -40,4 +40,13 @@ public class User {
                 .wishLists(null)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

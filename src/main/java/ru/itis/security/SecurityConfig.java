@@ -1,7 +1,6 @@
 package ru.itis.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,28 +11,28 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.security.filters.JwtAuthenticationFilter;
 import ru.itis.security.providers.JwtAuthenticationProvider;
-import ru.itis.security.util.JwtAuthenticationEntryPoint;
+import ru.itis.security.util.JwtTokenUtil;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @ComponentScan("ru.itis")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private JwtAuthenticationEntryPoint entryPoint;
-    private UserDetailsService service;
+    private JwtTokenUtil util;
+    private UserDetailsImpl service;
     private JwtAuthenticationFilter filter;
     private JwtAuthenticationProvider provider;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationEntryPoint entryPoint, @Qualifier("jwtUserDetailsService") UserDetailsService service,
+    public SecurityConfig(JwtTokenUtil util, UserDetailsImpl service,
                           JwtAuthenticationFilter filter, JwtAuthenticationProvider provider) {
-        this.entryPoint = entryPoint;
+        this.util = util;
         this.service = service;
         this.filter = filter;
         this.provider = provider;
@@ -61,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable();
         http.sessionManagement().disable();
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling().authenticationEntryPoint(entryPoint)
+        http.exceptionHandling().authenticationEntryPoint(util)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authenticationProvider(provider);
         http.authorizeRequests().antMatchers("/swagger-ui.html#/**").permitAll();

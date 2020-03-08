@@ -1,12 +1,10 @@
 package ru.itis.security.providers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import ru.itis.security.auth.JwtAuthentication;
 import ru.itis.security.details.UserDetailsImpl;
@@ -14,10 +12,10 @@ import ru.itis.security.details.UserDetailsImpl;
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
-    private UserDetailsService service;
+    private UserDetailsImpl service;
 
     @Autowired
-    public JwtAuthenticationProvider(@Qualifier("jwtUserDetailsService") UserDetailsService service) {
+    public JwtAuthenticationProvider(UserDetailsImpl service) {
         this.service = service;
     }
 

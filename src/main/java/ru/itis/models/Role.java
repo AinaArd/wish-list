@@ -1,5 +1,5 @@
 package ru.itis.models;
 
-public enum  Role {
+public enum Role {
     AUTHOR, SIMPLE_USER
 }

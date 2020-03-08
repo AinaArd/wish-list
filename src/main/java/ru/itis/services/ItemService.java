@@ -23,7 +23,7 @@ public class ItemService {
 
     public void addNewItem(ItemDto itemDto, Long listId) {
         WishList wishList = getWishList(listId);
-        Item newItem = itemDtoToItem(itemDto,wishList);
+        Item newItem = itemDtoToItem(itemDto, wishList);
         itemsRepository.save(newItem);
     }
 
