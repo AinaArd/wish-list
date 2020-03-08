@@ -3,14 +3,12 @@ package ru.itis.services;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
 import ru.itis.dto.UserDto;
 import ru.itis.models.Role;
 import ru.itis.models.User;
-import ru.itis.repositories.TokensRepository;
 import ru.itis.repositories.UsersRepository;
 
 import java.util.*;
@@ -20,16 +18,12 @@ public class UserService {
 
     private UsersRepository usersRepository;
     private PasswordEncoder passwordEncoder;
-    private TokensRepository tokensRepository;
-
-    @Value("jwt.secret")
-    private String key;
+    private static final String KEY = "secret";
 
     @Autowired
-    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, TokensRepository tokensRepository) {
+    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
-        this.tokensRepository = tokensRepository;
     }
 
     public void addUser(UserDto userDto) {
@@ -46,18 +40,12 @@ public class UserService {
         return Jwts.builder()
                 .claim("login", user.getLogin())
                 .claim("id", user.getId())
-                .signWith(SignatureAlgorithm.HS512, key)
+                .signWith(SignatureAlgorithm.HS512, KEY)
                 .compact();
-    }
-
-    public Optional<User> findUserByToken(String token) {
-        String userLogin = tokensRepository.findUsernameByValue(token);
-        return usersRepository.findByLogin(userLogin);
     }
 
     public TokenDto login(UserDto userDto) {
         Optional<User> userCandidate = usersRepository.findByLogin(userDto.getLogin());
-
         if (userCandidate.isPresent()) {
             User user = userCandidate.get();
             return new TokenDto(createToken(user));
@@ -74,5 +62,9 @@ public class UserService {
         userProperties.put("login", user.getLogin());
         userProperties.put("wishLists", user.getWishLists());
         return userProperties;
+    }
+
+    public Optional<User> findUserByLogin(String login) {
+        return usersRepository.findByLogin(login);
     }
 }

@@ -43,7 +43,8 @@ public class WishListController {
     @DeleteMapping("/lists/{listId}")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Delete an item")
-    public void deleteItem(@PathVariable Long listId, @RequestParam("title") String itemName, @RequestHeader(name = "Authorization") String token) {
+    public void deleteItem(@PathVariable Long listId, @RequestParam("title") String itemName,
+                           @RequestHeader(name = "Authorization") String token) {
         itemService.removeByName(itemName);
     }
 }

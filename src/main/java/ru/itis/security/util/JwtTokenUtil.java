@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class JwtTokenUtil implements Serializable {
 
     private static final long JWT_TOKEN_VALIDITY = 86400;
-    private static final String SECRET = "ainaisthebest";
+    private static final String SECRET = "secret";
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

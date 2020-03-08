@@ -35,9 +35,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
-        String startString = "Bearer ";
-        if (requestTokenHeader != null && requestTokenHeader.startsWith(startString)) {
-            jwtToken = requestTokenHeader.substring(startString.length() + 1);
+        if (requestTokenHeader != null) {
+            jwtToken = requestTokenHeader;
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
