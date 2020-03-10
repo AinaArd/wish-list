@@ -3,7 +3,7 @@ package ru.itis.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itis.models.Item;
+import ru.itis.model.Item;
 
 import java.util.List;
 

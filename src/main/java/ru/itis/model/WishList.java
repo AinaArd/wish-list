@@ -1,4 +1,4 @@
-package ru.itis.models;
+package ru.itis.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

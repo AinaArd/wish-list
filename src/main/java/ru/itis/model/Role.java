@@ -1,4 +1,4 @@
-package ru.itis.models;
+package ru.itis.model;
 
 public enum Role {
     AUTHOR, SIMPLE_USER

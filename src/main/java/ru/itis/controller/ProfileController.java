@@ -1,4 +1,4 @@
-package ru.itis.controllers;
+package ru.itis.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.models.User;
-import ru.itis.services.UserService;
-import ru.itis.services.WishListService;
+import ru.itis.model.User;
+import ru.itis.service.UserService;
+import ru.itis.service.WishListService;
 
 import java.util.Optional;
 

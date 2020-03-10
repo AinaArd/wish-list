@@ -1,7 +1,7 @@
-package ru.itis.validators;
+package ru.itis.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.itis.repositories.UsersRepository;
+import ru.itis.repository.UsersRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

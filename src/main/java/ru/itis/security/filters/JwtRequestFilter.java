@@ -1,6 +1,6 @@
 package ru.itis.security.filters;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,12 +42,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                log.error("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                log.error("JWT Token has expired");
+                throw new IllegalArgumentException("Unable to get JWT Token", e);
+            } catch (JwtException e) {
+                throw new JwtException("JWT Token has expired", e);
             }
         } else {
-            log.warn("JWT Token does not begin with Bearer String");
+            log.error("No JWT token in the request header");
         }
         setAuthAndDetails(username, jwtToken, request);
         chain.doFilter(request, response);

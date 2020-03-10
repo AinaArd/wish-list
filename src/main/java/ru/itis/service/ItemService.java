@@ -1,11 +1,11 @@
-package ru.itis.services;
+package ru.itis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.ItemDto;
-import ru.itis.models.Item;
-import ru.itis.models.WishList;
-import ru.itis.repositories.ItemsRepository;
+import ru.itis.model.Item;
+import ru.itis.model.WishList;
+import ru.itis.repository.ItemsRepository;
 
 import java.util.Optional;
 

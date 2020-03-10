@@ -1,4 +1,4 @@
-package ru.itis.controllers;
+package ru.itis.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.dto.ItemDto;
-import ru.itis.models.WishList;
-import ru.itis.services.ItemService;
-import ru.itis.services.WishListService;
+import ru.itis.model.WishList;
+import ru.itis.service.ItemService;
+import ru.itis.service.WishListService;
 
 @RestController
 public class WishListController {

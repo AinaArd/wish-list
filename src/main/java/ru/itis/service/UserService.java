@@ -1,4 +1,4 @@
-package ru.itis.services;
+package ru.itis.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,9 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
 import ru.itis.dto.UserDto;
-import ru.itis.models.Role;
-import ru.itis.models.User;
-import ru.itis.repositories.UsersRepository;
+import ru.itis.model.Role;
+import ru.itis.model.User;
+import ru.itis.repository.UsersRepository;
 
 import java.util.*;
 
@@ -53,7 +53,7 @@ public class UserService {
         throw new NoSuchElementException("Can not find such user");
     }
 
-    public List<UserDto> getUsersByLogin(String login) {
+    public List<User> getUsersByLogin(String login) {
         return usersRepository.findAllByLoginIsContaining(login);
     }
 

@@ -1,7 +1,7 @@
 package ru.itis.dto;
 
 import lombok.Data;
-import ru.itis.validators.UniqueLogin;
+import ru.itis.validator.UniqueLogin;
 
 import javax.validation.constraints.NotBlank;
 

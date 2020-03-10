@@ -1,7 +1,7 @@
-package ru.itis.repositories;
+package ru.itis.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.itis.models.WishList;
+import ru.itis.model.WishList;
 
 import java.util.Optional;
 
