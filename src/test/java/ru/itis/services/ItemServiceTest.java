@@ -21,7 +21,7 @@ public class ItemServiceTest {
     private ItemService itemService;
 
     @Test
-    public void addItemWorksGood() {
+    public void dbItemEqualsToNewItem() {
         itemService.addNewItem(itemDto, 1L);
         Optional<Item> found = itemService.findItemByName(itemDto.getName());
         found.ifPresent(item -> assertEquals(itemDto.getName(), item.getName()));
