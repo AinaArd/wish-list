@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ru.itis.model.User;
+import ru.itis.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,15 +21,15 @@ public class UserDetailsImpl implements UserDetails, UserDetailsService {
 
     private User user;
     private String token;
-    private UsersRepository usersRepository;
+    private UserRepository usersRepository;
 
     UserDetailsImpl(User user) {
         this.user = user;
     }
 
     @Autowired
-    public UserDetailsImpl(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UserDetailsImpl(UserRepository userRepository) {
+        this.usersRepository = userRepository;
     }
 
     @Override

@@ -25,6 +25,7 @@ public class SearchController {
     @PostMapping("/search")
     @ApiOperation("Find users by name")
     public ResponseEntity<?> findUsers(@RequestParam String login) {
-        return ResponseEntity.ok(userService.getUsersByLogin(login));
+//        return ResponseEntity.ok(userService.getUsersByLogin(login));
+        return ResponseEntity.ok().build();
     }
 }

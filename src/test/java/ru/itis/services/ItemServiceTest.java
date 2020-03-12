@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.itis.dto.ItemDto;
-import ru.itis.models.Item;
+import ru.itis.model.Item;
+import ru.itis.service.ItemService;
 
 import java.util.Optional;
 

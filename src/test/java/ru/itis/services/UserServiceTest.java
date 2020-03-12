@@ -8,7 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.itis.dto.TokenDto;
 import ru.itis.dto.UserDto;
-import ru.itis.models.User;
+import ru.itis.model.User;
+import ru.itis.service.UserService;
 
 import java.util.Optional;
 
