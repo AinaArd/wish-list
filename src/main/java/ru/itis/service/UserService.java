@@ -2,6 +2,7 @@ package ru.itis.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import ru.itis.model.Role;
 import ru.itis.model.User;
 import ru.itis.repository.UserRepository;
 
+import javax.crypto.SecretKey;
 import java.util.*;
 
 @Service
@@ -19,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private static final String KEY = "secret";
+
+    private SecretKey key = MacProvider.generateKey();
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -40,7 +44,7 @@ public class UserService {
         return Jwts.builder()
                 .claim("login", user.getLogin())
                 .claim("id", user.getId())
-                .signWith(SignatureAlgorithm.HS512, KEY)
+                .signWith(SignatureAlgorithm.HS512, key.getEncoded())
                 .compact();
     }
 
