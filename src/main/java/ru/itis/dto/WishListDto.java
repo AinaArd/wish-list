@@ -1,7 +1,7 @@
 package ru.itis.dto;
 
 import lombok.Data;
-import ru.itis.models.Item;
+import ru.itis.model.Item;
 
 import java.util.List;
 

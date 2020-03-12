@@ -1,23 +1,34 @@
 package ru.itis.security.details;
 
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.itis.models.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import ru.itis.model.User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
-public class UserDetailsImpl implements UserDetails {
+@Data
+@Component
+public class UserDetailsImpl implements UserDetails, UserDetailsService {
 
     private User user;
+    private String token;
+    private UsersRepository usersRepository;
 
-    public UserDetailsImpl(User user) {
+    UserDetailsImpl(User user) {
         this.user = user;
     }
 
-    public User getUser() {
-        return user;
+    @Autowired
+    public UserDetailsImpl(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -55,5 +66,14 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<User> user = usersRepository.findByLogin(login);
+        if (!user.isPresent()) {
+            throw new UsernameNotFoundException("User not found with login: " + login);
+        }
+        return new UserDetailsImpl(user.get());
     }
 }

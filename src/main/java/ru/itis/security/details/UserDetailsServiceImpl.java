@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.itis.models.User;
-import ru.itis.repositories.UserRepository;
+import ru.itis.model.User;
+import ru.itis.repository.UserRepository;
 
 import java.util.Optional;
 

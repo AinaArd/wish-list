@@ -10,21 +10,31 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import ru.itis.security.filters.TokenAuthenticationFilter;
-import ru.itis.security.providers.TokenAuthenticationProvider;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.itis.security.details.UserDetailsImpl;
+import ru.itis.security.filters.JwtAuthenticationFilter;
+import ru.itis.security.providers.JwtAuthenticationProvider;
+import ru.itis.security.util.JwtTokenUtil;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @ComponentScan("ru.itis")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private TokenAuthenticationProvider provider;
+    private JwtTokenUtil util;
+    private UserDetailsImpl service;
+    private JwtAuthenticationFilter filter;
+    private JwtAuthenticationProvider provider;
 
     @Autowired
-    public SecurityConfig(TokenAuthenticationProvider provider) {
+    public SecurityConfig(JwtTokenUtil util, UserDetailsImpl service,
+                          JwtAuthenticationFilter filter, JwtAuthenticationProvider provider) {
+        this.util = util;
+        this.service = service;
+        this.filter = filter;
         this.provider = provider;
     }
 
@@ -39,9 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(provider);
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(service).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -49,7 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors().disable();
         http.sessionManagement().disable();
-        http.addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling().authenticationEntryPoint(util)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authenticationProvider(provider);
         http.authorizeRequests().antMatchers("/swagger-ui.html#/**").permitAll();
     }
 }
