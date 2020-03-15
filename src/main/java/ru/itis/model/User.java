@@ -7,8 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -27,6 +29,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Transient
+    private static final long serialVersionUID = 1L;
+
+    @Transient
+    Collection<GrantedAuthority> authorities;
 
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)

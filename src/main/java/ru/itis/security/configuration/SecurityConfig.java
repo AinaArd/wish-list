@@ -1,4 +1,4 @@
-package ru.itis.security;
+package ru.itis.security.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

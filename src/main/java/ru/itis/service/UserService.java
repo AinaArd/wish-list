@@ -4,6 +4,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.dto.TokenDto;
@@ -66,5 +68,18 @@ public class UserService {
 
     public Optional<User> findUserByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public Optional<User> findUserAndSetAuthorities(String login) {
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        Optional<User> user = userRepository.findByLogin(login);
+        if (user.isPresent()) {
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_SYSTEMADMIN");
+            grantedAuthorities.add(grantedAuthority);
+            user.get().setAuthorities(grantedAuthorities);
+            return user;
+        } else {
+            throw new NoSuchElementException("Can not find such user");
+        }
     }
 }
